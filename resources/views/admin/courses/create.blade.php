@@ -19,8 +19,12 @@
     @csrf
     @include('admin.courses._form', ['course' => null, 'instructors' => $instructors])
     <div class="flex gap-3 pt-4 border-t-[3px] border-[#0A0A0A]">
-      <button type="submit" class="btn-brut text-sm px-8 py-4">Kurs Oluştur ↗</button>
-      <a href="{{ route('admin.courses.index') }}" class="btn-brut-dark text-sm px-8 py-4">İptal</a>
+      <button type="submit"
+        class="bg-[#FFE000] text-[#0A0A0A] font-black text-sm uppercase tracking-widest px-8 py-4 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors"
+        style="box-shadow:4px 4px 0 #0A0A0A">Kurs Oluştur ↗</button>
+      <a href="{{ route('admin.courses.index') }}"
+        class="bg-[#0A0A0A] text-[#F5F0E8] font-black text-sm uppercase tracking-widest px-8 py-4 border-[3px] border-[#0A0A0A] hover:bg-[#F5F0E8] hover:text-[#0A0A0A] transition-colors"
+        style="box-shadow:4px 4px 0 #0A0A0A">İptal</a>
     </div>
   </form>
 

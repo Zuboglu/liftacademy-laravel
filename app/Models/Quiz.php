@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Quiz extends Model
 {
-    protected $fillable = ['title', 'course_id', 'passing_score', 'time_limit', 'attempts', 'description'];
+    protected $fillable = [
+        'title', 'description', 'course_id',
+        'passing_score', 'time_limit', 'attempts', 'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
 
     public function course()
     {
@@ -18,7 +25,8 @@ class Quiz extends Model
         return $this->hasMany(QuizQuestion::class)->orderBy('order');
     }
 
-    public function attempts()
+    // Relation name differs from 'attempts' column to avoid Eloquent conflict
+    public function quizAttempts()
     {
         return $this->hasMany(QuizAttempt::class);
     }

@@ -9,7 +9,9 @@
       <a href="{{ route('admin.dashboard') }}" class="text-mono-sm text-[#888] hover:text-[#0A0A0A] transition-colors">← Admin Panel</a>
       <h1 class="font-black text-3xl uppercase tracking-tight mt-1">KURS YÖNETİMİ</h1>
     </div>
-    <a href="{{ route('admin.courses.create') }}" class="btn-brut text-xs py-2.5 px-6">+ Yeni Kurs</a>
+    <a href="{{ route('admin.courses.create') }}"
+      class="bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-6 py-3 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors"
+      style="box-shadow:4px 4px 0 #0A0A0A">+ Yeni Kurs</a>
   </div>
 
   @if(session('success'))
@@ -40,9 +42,9 @@
       <div class="col-span-2">
         <span class="font-mono text-[10px] text-[#888]">{{ $c->enrollments_count }} öğrenci</span>
       </div>
-      <div class="col-span-2 flex gap-2">
-        <a href="{{ route('admin.courses.show', $c->id) }}" class="font-mono text-[10px] text-[#0047FF] hover:underline uppercase">Yönet</a>
-        <a href="{{ route('admin.courses.edit', $c->id) }}" class="font-mono text-[10px] text-[#888] hover:underline uppercase">Düzenle</a>
+      <div class="col-span-2 flex flex-wrap gap-2">
+        <a href="{{ route('admin.courses.show', $c->id) }}" class="font-mono text-[10px] text-[#0047FF] hover:underline uppercase tracking-widest">Yönet</a>
+        <a href="{{ route('admin.courses.edit', $c->id) }}" class="font-mono text-[10px] text-[#888] hover:underline uppercase tracking-widest">Düzenle</a>
       </div>
     </div>
     @empty

@@ -14,10 +14,10 @@ use Illuminate\Support\Str;
 
 class QuizController extends Controller
 {
-    // GET /quizzes — Tüm sınavlar listesi
     public function index()
     {
         $quizzes = Quiz::with(['course'])
+            ->where('is_active', true)
             ->withCount('questions')
             ->orderByDesc('created_at')
             ->paginate(12);
@@ -25,7 +25,6 @@ class QuizController extends Controller
         return view('quizzes.index', compact('quizzes'));
     }
 
-    // GET /quizzes/{id} — Sınav detay / başlangıç ekranı
     public function show(Quiz $quiz)
     {
         $quiz->load(['course', 'questions']);
@@ -42,10 +41,9 @@ class QuizController extends Controller
 
             $bestScore = $userAttempts->max('score');
             $passed    = $userAttempts->where('passed', true)->count() > 0;
-            $canTake   = $userAttempts->count() < $quiz->attempts;
+            $canTake   = $quiz->is_active && ($userAttempts->count() < $quiz->attempts);
         }
 
-        // Video tamamlanma kontrolü (course'a bağlı ise)
         $videoCompleted = true;
         if ($quiz->course_id && Auth::check()) {
             $videoCompleted = $this->isCourseVideoCompleted($quiz->course_id, Auth::id());
@@ -54,16 +52,19 @@ class QuizController extends Controller
         return view('quizzes.show', compact('quiz', 'userAttempts', 'bestScore', 'passed', 'canTake', 'videoCompleted'));
     }
 
-    // GET /quizzes/{id}/take — Sınav alma ekranı
     public function take(Quiz $quiz)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
+        if (!$quiz->is_active) {
+            return redirect()->route('quizzes.show', $quiz->id)
+                ->with('error', 'Bu sınav şu anda aktif değil. Yönetici tarafından açılması bekleniyor.');
+        }
+
         $quiz->load(['questions']);
 
-        // Hak kontrolü
         $attemptCount = QuizAttempt::where('user_id', Auth::id())
             ->where('quiz_id', $quiz->id)
             ->count();
@@ -73,7 +74,6 @@ class QuizController extends Controller
                 ->with('error', 'Maksimum deneme hakkınızı kullandınız.');
         }
 
-        // Video tamamlanma kontrolü
         if ($quiz->course_id && !$this->isCourseVideoCompleted($quiz->course_id, Auth::id())) {
             return redirect()->route('quizzes.show', $quiz->id)
                 ->with('error', 'Sınava girebilmek için önce tüm videoları izlemelisiniz.');
@@ -82,16 +82,19 @@ class QuizController extends Controller
         return view('quizzes.take', compact('quiz'));
     }
 
-    // POST /quizzes/{id}/submit — Cevapları değerlendir
     public function submit(Request $request, Quiz $quiz)
     {
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
+        if (!$quiz->is_active) {
+            return redirect()->route('quizzes.show', $quiz->id)
+                ->with('error', 'Sınav süresi doldu veya yönetici tarafından kapatıldı.');
+        }
+
         $quiz->load(['questions']);
 
-        // Hak kontrolü
         $attemptCount = QuizAttempt::where('user_id', Auth::id())
             ->where('quiz_id', $quiz->id)
             ->count();
@@ -101,9 +104,9 @@ class QuizController extends Controller
                 ->with('error', 'Maksimum deneme hakkınızı kullandınız.');
         }
 
-        $answers       = $request->input('answers', []);
-        $totalQ        = $quiz->questions->count();
-        $correctCount  = 0;
+        $answers      = $request->input('answers', []);
+        $totalQ       = $quiz->questions->count();
+        $correctCount = 0;
 
         foreach ($quiz->questions as $q) {
             $given = $answers[$q->id] ?? null;
@@ -112,7 +115,6 @@ class QuizController extends Controller
             }
         }
 
-        // 100 üzerinden puanlama
         $score  = $totalQ > 0 ? (int) round(($correctCount / $totalQ) * 100) : 0;
         $passed = $score >= $quiz->passing_score;
 
@@ -128,7 +130,11 @@ class QuizController extends Controller
             'finished_at'     => now(),
         ]);
 
-        // Geçtiyse sertifika kontrolü
+        // Süre dolunca otomatik kapat
+        if ($quiz->time_limit) {
+            $quiz->update(['is_active' => false]);
+        }
+
         if ($passed && $quiz->course_id) {
             $this->tryIssueCertificate($quiz->course_id, Auth::id());
         }
@@ -136,7 +142,6 @@ class QuizController extends Controller
         return redirect()->route('quizzes.result', $attempt->id);
     }
 
-    // GET /quizzes/result/{attempt} — Sonuç ekranı
     public function result(QuizAttempt $attempt)
     {
         if ($attempt->user_id !== Auth::id()) {
@@ -145,7 +150,6 @@ class QuizController extends Controller
 
         $attempt->load(['quiz.questions', 'quiz.course']);
 
-        // Sertifika oluşturuldu mu?
         $certificate = null;
         if ($attempt->passed && $attempt->quiz->course_id) {
             $certificate = Certificate::where('user_id', Auth::id())
@@ -157,7 +161,6 @@ class QuizController extends Controller
         return view('quizzes.result', compact('attempt', 'certificate'));
     }
 
-    // ── Yardımcı: tüm videolar izlenmiş mi? ──────────────────────────────
     private function isCourseVideoCompleted(int $courseId, int $userId): bool
     {
         $course = Course::with('sections.lessons')->find($courseId);
@@ -176,10 +179,8 @@ class QuizController extends Controller
         return $completedIds->count() >= $videoLessons->count();
     }
 
-    // ── Yardımcı: sertifika otomatik oluştur ─────────────────────────────
     private function tryIssueCertificate(int $courseId, int $userId): void
     {
-        // Zaten var mı?
         $existing = Certificate::where('user_id', $userId)
             ->where('course_id', $courseId)
             ->first();
@@ -189,33 +190,30 @@ class QuizController extends Controller
         $course = Course::find($courseId);
         if (!$course) return;
 
-        // Kursa ait tüm sınavları geçmiş mi?
         $quizIds = Quiz::where('course_id', $courseId)->pluck('id');
         foreach ($quizIds as $qId) {
             $hasPassed = QuizAttempt::where('user_id', $userId)
                 ->where('quiz_id', $qId)
                 ->where('passed', true)
                 ->exists();
-            if (!$hasPassed) return; // Henüz hepsini geçmemiş
+            if (!$hasPassed) return;
         }
 
-        // Sertifika oluştur
         $user = \App\Models\User::find($userId);
         Certificate::create([
-            'user_id'          => $userId,
-            'course_id'        => $courseId,
-            'cert_number'      => 'LIFT-' . strtoupper(Str::random(4)) . '-' . date('Y') . '-' . str_pad($userId, 4, '0', STR_PAD_LEFT),
-            'level'            => 'OPERATOR',
-            'status'           => 'ACTIVE',
-            'recipient_name'   => $user->name,
-            'instructor_name'  => $course->instructor->name ?? 'LiftAcademy',
-            'training_hours'   => 8,
-            'completed_at'     => now(),
-            'expires_at'       => now()->addYear(),
-            'issued_at'        => now(),
+            'user_id'         => $userId,
+            'course_id'       => $courseId,
+            'cert_number'     => 'LIFT-' . strtoupper(Str::random(4)) . '-' . date('Y') . '-' . str_pad($userId, 4, '0', STR_PAD_LEFT),
+            'level'           => 'OPERATOR',
+            'status'          => 'ACTIVE',
+            'recipient_name'  => $user->name,
+            'instructor_name' => $course->instructor->name ?? 'LiftAcademy',
+            'training_hours'  => 8,
+            'completed_at'    => now(),
+            'expires_at'      => now()->addYear(),
+            'issued_at'       => now(),
         ]);
 
-        // Enrollment tamamlandı olarak işaretle
         Enrollment::where('user_id', $userId)
             ->where('course_id', $courseId)
             ->update(['status' => 'COMPLETED', 'completed_at' => now()]);

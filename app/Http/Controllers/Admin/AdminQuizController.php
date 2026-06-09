@@ -33,7 +33,25 @@ class AdminQuizController extends Controller
             'attempts'      => 'required|integer|min:1|max:10',
         ]);
 
+        $data['is_active'] = true;
+
         $quiz = Quiz::create($data);
+
+        // Inline sorular varsa kaydet
+        $questions = $request->input('questions', []);
+        foreach ($questions as $i => $qdata) {
+            if (empty(trim($qdata['question'] ?? ''))) continue;
+            $opts = array_values(array_filter($qdata['options'] ?? [], fn($o) => trim($o) !== ''));
+            if (count($opts) < 2) continue;
+            QuizQuestion::create([
+                'quiz_id'        => $quiz->id,
+                'question'       => $qdata['question'],
+                'options'        => $opts,
+                'correct_answer' => (int)($qdata['correct_answer'] ?? 0),
+                'explanation'    => $qdata['explanation'] ?? null,
+                'order'          => $i,
+            ]);
+        }
 
         return redirect()->route('admin.quizzes.show', $quiz->id)
             ->with('success', 'Sınav oluşturuldu.');
@@ -60,7 +78,10 @@ class AdminQuizController extends Controller
             'passing_score' => 'required|integer|min:0|max:100',
             'time_limit'    => 'nullable|integer|min:1',
             'attempts'      => 'required|integer|min:1|max:10',
+            'is_active'     => 'nullable|boolean',
         ]);
+
+        $data['is_active'] = $request->boolean('is_active');
 
         $quiz->update($data);
 
@@ -74,6 +95,13 @@ class AdminQuizController extends Controller
         return redirect()->route('admin.quizzes.index')->with('success', 'Sınav silindi.');
     }
 
+    // POST /admin/quizzes/{quiz}/toggle-active — AJAX veya form
+    public function toggleActive(Quiz $quiz)
+    {
+        $quiz->update(['is_active' => !$quiz->is_active]);
+        return back()->with('success', $quiz->is_active ? 'Sınav aktif edildi.' : 'Sınav pasif edildi.');
+    }
+
     // ── Soru işlemleri ─────────────────────────────────────────────────
     public function storeQuestion(Request $request, Quiz $quiz)
     {
@@ -83,10 +111,8 @@ class AdminQuizController extends Controller
             'options.*'      => 'required|string',
             'correct_answer' => 'required|integer|min:0',
             'explanation'    => 'nullable|string',
-            'order'          => 'nullable|integer',
         ]);
 
-        // Boş seçenekleri filtrele
         $options = array_values(array_filter($data['options'], fn($o) => trim($o) !== ''));
 
         QuizQuestion::create([
@@ -95,7 +121,7 @@ class AdminQuizController extends Controller
             'options'        => $options,
             'correct_answer' => $data['correct_answer'],
             'explanation'    => $data['explanation'] ?? null,
-            'order'          => $data['order'] ?? $quiz->questions()->count(),
+            'order'          => $quiz->questions()->count(),
         ]);
 
         return back()->with('success', 'Soru eklendi.');
@@ -109,7 +135,6 @@ class AdminQuizController extends Controller
             'options.*'      => 'required|string',
             'correct_answer' => 'required|integer|min:0',
             'explanation'    => 'nullable|string',
-            'order'          => 'nullable|integer',
         ]);
 
         $options = array_values(array_filter($data['options'], fn($o) => trim($o) !== ''));
@@ -119,7 +144,6 @@ class AdminQuizController extends Controller
             'options'        => $options,
             'correct_answer' => $data['correct_answer'],
             'explanation'    => $data['explanation'] ?? null,
-            'order'          => $data['order'] ?? $question->order,
         ]);
 
         return back()->with('success', 'Soru güncellendi.');

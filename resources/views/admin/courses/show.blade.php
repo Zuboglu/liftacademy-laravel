@@ -15,11 +15,16 @@
         <span class="tag-black text-[9px]">{{ $course->category }}</span>
       </div>
     </div>
-    <div class="flex gap-2 shrink-0">
-      <a href="{{ route('admin.courses.edit', $course->id) }}" class="btn-brut text-xs py-2 px-4">Düzenle</a>
-      <form action="{{ route('admin.courses.destroy', $course->id) }}" method="POST" onsubmit="return confirm('Bu kursu silmek istediğinizden emin misiniz?')">
+    <div class="flex flex-wrap gap-2 shrink-0">
+      <a href="{{ route('admin.courses.edit', $course->id) }}"
+        class="bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-4 py-2.5 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors"
+        style="box-shadow:3px 3px 0 #0A0A0A">Düzenle</a>
+      <form action="{{ route('admin.courses.destroy', $course->id) }}" method="POST"
+        onsubmit="return confirm('Bu kursu silmek istediğinizden emin misiniz?')">
         @csrf @method('DELETE')
-        <button type="submit" class="border-[3px] border-[#FF2D2D] text-[#FF2D2D] font-black text-xs uppercase tracking-widest px-4 py-2 hover:bg-[#FF2D2D] hover:text-white transition-colors">Sil</button>
+        <button type="submit"
+          class="bg-white text-[#FF2D2D] font-black text-xs uppercase tracking-widest px-4 py-2.5 border-[3px] border-[#FF2D2D] hover:bg-[#FF2D2D] hover:text-white transition-colors"
+          style="box-shadow:3px 3px 0 #FF2D2D">Sil</button>
       </form>
     </div>
   </div>
@@ -44,7 +49,9 @@
             @csrf
             <input type="text" name="title" placeholder="Yeni bölüm adı..." class="input-brut flex-1 py-2 text-sm">
             <input type="number" name="order" placeholder="Sıra" class="input-brut w-20 py-2 text-sm">
-            <button type="submit" class="btn-brut text-xs py-2 px-4 whitespace-nowrap">+ Bölüm Ekle</button>
+            <button type="submit"
+              class="bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-4 py-2 border-[3px] border-[#0A0A0A] whitespace-nowrap hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors"
+              style="box-shadow:3px 3px 0 #0A0A0A">+ Bölüm Ekle</button>
           </form>
         </div>
       </div>
@@ -132,8 +139,10 @@
               </div>
             </div>
             <div class="flex gap-2">
-              <button type="submit" class="btn-brut text-xs py-1.5 px-4">Kaydet</button>
-              <button type="button" onclick="toggleLessonEdit({{ $lesson->id }})" class="btn-brut-dark text-xs py-1.5 px-4">İptal</button>
+              <button type="submit"
+                class="bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-5 py-2 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors">Kaydet</button>
+              <button type="button" onclick="toggleLessonEdit({{ $lesson->id }})"
+                class="bg-[#0A0A0A] text-[#F5F0E8] font-black text-xs uppercase tracking-widest px-5 py-2 border-[3px] border-[#0A0A0A] hover:bg-[#F5F0E8] hover:text-[#0A0A0A] transition-colors">İptal</button>
             </div>
           </form>
         </div>
@@ -185,7 +194,9 @@
                 </label>
               </div>
             </div>
-            <button type="submit" class="btn-brut text-xs py-1.5 px-5">+ Ders Ekle</button>
+            <button type="submit"
+              class="bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-5 py-2 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors"
+              style="box-shadow:3px 3px 0 #0A0A0A">+ Ders Ekle</button>
           </form>
         </div>
       </div>
@@ -217,7 +228,9 @@
         </div>
         @endforeach
         @endif
-        <a href="{{ route('admin.quizzes.create') }}?course_id={{ $course->id }}" class="btn-brut text-xs py-2 px-4 mt-3 inline-flex">+ Sınav Ekle</a>
+        <a href="{{ route('admin.quizzes.create') }}?course_id={{ $course->id }}"
+          class="inline-flex bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-4 py-2.5 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors mt-3"
+          style="box-shadow:3px 3px 0 #0A0A0A">+ Sınav Ekle</a>
       </div>
     </div>
 

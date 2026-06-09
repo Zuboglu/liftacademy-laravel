@@ -77,6 +77,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/quizzes/{quiz}/edit',    [AdminQuizController::class, 'edit'])->name('quizzes.edit');
     Route::put('/quizzes/{quiz}',         [AdminQuizController::class, 'update'])->name('quizzes.update');
     Route::delete('/quizzes/{quiz}',      [AdminQuizController::class, 'destroy'])->name('quizzes.destroy');
+    Route::post('/quizzes/{quiz}/toggle', [AdminQuizController::class, 'toggleActive'])->name('quizzes.toggle');
 
     // Soru işlemleri
     Route::post('/quizzes/{quiz}/questions',   [AdminQuizController::class, 'storeQuestion'])->name('questions.store');
