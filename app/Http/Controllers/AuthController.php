@@ -22,7 +22,9 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $locale = $request->session()->get('locale', 'tr');
             $request->session()->regenerate();
+            $request->session()->put('locale', $locale);
             return redirect()->intended(route('dashboard'));
         }
 
@@ -52,16 +54,20 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+        $locale = $request->session()->get('locale', 'tr');
         $request->session()->regenerate();
+        $request->session()->put('locale', $locale);
 
         return redirect()->route('dashboard');
     }
 
     public function logout(Request $request)
     {
+        $locale = $request->session()->get('locale', 'tr');
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        $request->session()->put('locale', $locale);
 
         return redirect()->route('home');
     }
