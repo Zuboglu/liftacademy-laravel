@@ -10,6 +10,7 @@
 <body class="bg-[#F5F0E8]">
     @include('partials.navbar')
     <main>@yield('content')</main>
+    @include('partials.chat-widget')
     @stack('scripts')
 </body>
 </html>

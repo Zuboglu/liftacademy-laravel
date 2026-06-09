@@ -8,12 +8,12 @@
     {{-- Başlık --}}
     <div class="flex items-center justify-between mb-6">
       <div>
-        <a href="{{ route('courses.show', $course->slug) }}" class="font-mono text-[10px] text-[#555] hover:text-[#FFE000] uppercase tracking-widest transition-colors">← Kursa Dön</a>
+        <a href="{{ route('courses.show', $course->slug) }}" class="font-mono text-[10px] text-[#555] hover:text-[#FFE000] uppercase tracking-widest transition-colors">← {{ __('ui.courses') }}</a>
         <h1 class="font-black text-xl text-[#FFE000] uppercase tracking-tight mt-1">{{ $course->title }}</h1>
       </div>
       @if($allVideosCompleted && $quizzes->isNotEmpty())
       <div class="bg-[#CCFF00] text-[#0A0A0A] px-4 py-2 font-black text-xs uppercase tracking-widest border-[3px] border-[#CCFF00]">
-        ✓ Videolar Tamamlandı — Sınav Açık!
+        ✓ {{ __('ui.all_courses') }} — {{ __('ui.start_quiz') }}
       </div>
       @endif
     </div>
@@ -26,7 +26,7 @@
         {{-- Video alanı --}}
         <div id="video-container" class="bg-[#111] border-[3px] border-[#1e1e1e] aspect-video flex items-center justify-center">
           <div id="video-placeholder" class="text-center">
-            <p class="font-mono text-[10px] text-[#555] uppercase tracking-widest mb-3">Soldaki listeden ders seçin</p>
+            <p class="font-mono text-[10px] text-[#555] uppercase tracking-widest mb-3">{{ __('ui.lesson') }}</p>
             <p class="text-4xl">▶</p>
           </div>
           <video id="video-player" class="hidden w-full h-full" controls controlsList="nodownload">
@@ -44,7 +44,7 @@
             </div>
             <button id="complete-btn" onclick="markComplete()"
               class="bg-[#CCFF00] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-4 py-2 border-[3px] border-[#CCFF00] hover:bg-transparent hover:text-[#CCFF00] transition-all hidden">
-              ✓ Tamamlandı İşaretle
+              ✓ {{ __('ui.completed_tag') }}
             </button>
           </div>
         </div>
@@ -55,10 +55,10 @@
           <div class="flex items-center justify-between flex-wrap gap-3">
             <div>
               <p class="font-black text-sm uppercase tracking-tight {{ $allVideosCompleted ? 'text-[#CCFF00]' : 'text-[#555]' }}">
-                {{ $allVideosCompleted ? '🔓 Sınavlar Açık!' : '🔒 Sınavlar Kilitli' }}
+                {{ $allVideosCompleted ? '🔓 '.__('ui.start_quiz').'!' : '🔒 '.__('ui.quiz_locked') }}
               </p>
               <p class="font-mono text-[10px] mt-1 {{ $allVideosCompleted ? 'text-[#888]' : 'text-[#333]' }}">
-                {{ $allVideosCompleted ? 'Tüm videoları izlediniz. Sınava girebilirsiniz.' : 'Sınava girebilmek için tüm videoları izleyin.' }}
+                {{ $allVideosCompleted ? __('ui.start_quiz').'!' : __('ui.quiz_locked_msg') }}
               </p>
             </div>
             @if($allVideosCompleted)
@@ -81,9 +81,9 @@
       <div class="w-full lg:w-80 shrink-0">
         <div class="border-[3px] border-[#1e1e1e] bg-[#0d0d0d]">
           <div class="px-4 py-3 border-b border-[#1e1e1e] flex items-center justify-between">
-            <p class="font-mono text-[9px] text-[#555] uppercase tracking-widest">DERSLER</p>
+            <p class="font-mono text-[9px] text-[#555] uppercase tracking-widest">{{ __('ui.lessons_label') }}</p>
             <span class="font-mono text-[10px] text-[#555]">
-              {{ count($completedIds) }} / {{ $course->sections->flatMap(fn($s) => $s->lessons)->count() }} tamamlandı
+              {{ count($completedIds) }} / {{ $course->sections->flatMap(fn($s) => $s->lessons)->count() }} {{ __('ui.completed_tag') }}
             </span>
           </div>
 

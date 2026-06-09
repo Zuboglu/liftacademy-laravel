@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -19,6 +20,9 @@ Route::get('/lang/{locale}', function (string $locale) {
     }
     return back();
 })->name('lang.switch');
+
+// ── Chat ────────────────────────────────────────────────────────────────
+Route::post('/chat', [ChatController::class, 'send'])->name('chat.send');
 
 // ── Public ──────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');

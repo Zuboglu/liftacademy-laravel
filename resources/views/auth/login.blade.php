@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-@section('title', 'Giriş – LiftAcademy')
+@section('title', __('ui.login_tag') . ' – LiftAcademy')
 @section('content')
 
 <div class="min-h-screen bg-[#F5F0E8] flex">
@@ -12,9 +12,9 @@
       </a>
       <div class="mb-12">
         <h1 class="text-5xl font-black text-[#F5F0E8] uppercase leading-none tracking-tight mb-4">
-          TEKRAR<br><span class="text-[#FFE000]">HOŞGELDİN</span>
+          {{ __('ui.welcome_back') }}
         </h1>
-        <p class="text-[#888] font-medium leading-relaxed">Eğitimine kaldığın yerden devam et.</p>
+        <p class="text-[#888] font-medium leading-relaxed">{{ __('ui.continue_training') }}</p>
       </div>
       <div class="grid grid-cols-2 gap-4">
         @foreach([['1.2K+','Kayıtlı Operatör','bg-[#FFE000]','text-[#0A0A0A]'],['%97','Geçme Oranı','border-[2px] border-[#444]','text-[#F5F0E8]'],['135+','Aktif Kurs','border-[2px] border-[#444]','text-[#F5F0E8]'],['3.4K+','Sertifika','bg-[#CCFF00]','text-[#0A0A0A]']] as $s)
@@ -46,9 +46,9 @@
       </div>
 
       <div class="mb-8">
-        <span class="tag-black mb-4 inline-block">GİRİŞ YAP</span>
-        <h2 class="text-3xl font-black uppercase tracking-tight text-[#0A0A0A]">Hesabına giriş yap</h2>
-        <p class="text-sm text-[#888] mt-2 font-medium">Demo için aşağıdaki bilgileri kullanabilirsin.</p>
+        <span class="tag-black mb-4 inline-block">{{ __('ui.login_tag') }}</span>
+        <h2 class="text-3xl font-black uppercase tracking-tight text-[#0A0A0A]">{{ __('ui.login_title') }}</h2>
+        <p class="text-sm text-[#888] mt-2 font-medium">{{ __('ui.login_demo_hint') }}</p>
       </div>
 
       {{-- Demo Kartlar --}}
@@ -72,28 +72,28 @@
       <form method="POST" action="{{ route('login') }}" class="space-y-5">
         @csrf
         <div>
-          <label for="email" class="text-mono-sm mb-2 block">E-POSTA</label>
+          <label for="email" class="text-mono-sm mb-2 block">{{ __('ui.login_email') }}</label>
           <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
             placeholder="ornek@firma.com" class="input-brut @error('email') border-[#FF2D2D] @enderror">
           @error('email')<p class="text-[#FF2D2D] text-xs font-bold mt-1">{{ $message }}</p>@enderror
         </div>
         <div>
           <div class="flex items-center justify-between mb-2">
-            <label for="password" class="text-mono-sm">ŞİFRE</label>
+            <label for="password" class="text-mono-sm">{{ __('ui.login_password') }}</label>
           </div>
           <input id="password" type="password" name="password" required placeholder="••••••••" class="input-brut @error('password') border-[#FF2D2D] @enderror">
           @error('password')<p class="text-[#FF2D2D] text-xs font-bold mt-1">{{ $message }}</p>@enderror
         </div>
         <div class="flex items-center gap-2">
           <input type="checkbox" id="remember" name="remember" class="w-4 h-4 border-[2px] border-[#0A0A0A] appearance-none checked:bg-[#FFE000] cursor-pointer">
-          <label for="remember" class="text-sm font-bold cursor-pointer">Beni hatırla</label>
+          <label for="remember" class="text-sm font-bold cursor-pointer">{{ __('ui.login_remember') }}</label>
         </div>
         <button type="submit" class="btn-brut-dark w-full justify-center py-4 text-sm">
-          Giriş Yap ↗
+          {{ __('ui.login_button') }} ↗
         </button>
         <p class="text-center text-sm font-medium text-[#888]">
-          Hesabın yok mu?
-          <a href="{{ route('register') }}" class="text-[#0A0A0A] font-bold underline hover:text-[#0047FF]">Kayıt ol</a>
+          {{ __('ui.login_no_account') }}
+          <a href="{{ route('register') }}" class="text-[#0A0A0A] font-bold underline hover:text-[#0047FF]">{{ __('ui.register_button') }}</a>
         </p>
       </form>
     </div>

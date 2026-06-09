@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Kurslar – LiftAcademy')
+@section('title', __('ui.all_courses') . ' – LiftAcademy')
 @section('content')
 
 <div class="min-h-screen bg-[#F5F0E8]">
@@ -20,15 +20,15 @@
           </div>
           <div class="px-4 py-2 border-l-[3px] border-[#FFE000]">
             <p class="font-black text-[10px] uppercase tracking-widest text-[#888]">LiftAcademy</p>
-            <p class="font-black text-sm uppercase tracking-tight text-[#F5F0E8] leading-tight">Operatör Eğitimi</p>
+            <p class="font-black text-sm uppercase tracking-tight text-[#F5F0E8] leading-tight">{{ __('ui.operator_training') }}</p>
           </div>
         </div>
-        <span class="tag-yellow text-[10px]">{{ $total }} AKTİF KURS</span>
+        <span class="tag-yellow text-[10px]">{{ $total }} {{ __('ui.active_courses') }}</span>
       </div>
 
       <h1 class="font-black text-[#F5F0E8] uppercase tracking-tight leading-none mb-6"
         style="font-size:clamp(2.5rem,5vw,5rem);letter-spacing:-0.04em">
-        TÜM<br><span class="text-[#FFE000]">KURSLAR</span>
+        {{ __('ui.all_courses') }}
       </h1>
 
       {{-- Arama --}}
@@ -38,10 +38,10 @@
           <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#888] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" stroke-width="2" stroke-linecap="round"/>
           </svg>
-          <input type="text" name="q" value="{{ request('q') }}" placeholder="Kurs veya eğitmen ara..."
+          <input type="text" name="q" value="{{ request('q') }}" placeholder="{{ __('ui.search_courses') }}"
             class="w-full pl-11 pr-4 py-3 text-sm font-medium text-[#0A0A0A] bg-[#F5F0E8] border-[3px] border-[#F5F0E8] outline-none placeholder:text-[#888] focus:border-[#FFE000] transition-colors">
         </div>
-        <button type="submit" class="btn-brut text-xs py-0 px-5 border-l-0">ARA</button>
+        <button type="submit" class="btn-brut text-xs py-0 px-5 border-l-0">{{ __('ui.search') }}</button>
       </form>
     </div>
   </div>
@@ -63,14 +63,21 @@
     {{-- Sonuçlar --}}
     @if($courses->isEmpty())
     <div class="text-center py-20 border-[3px] border-[#0A0A0A]" style="box-shadow:6px 6px 0 #0A0A0A">
-      <p class="font-black text-xl uppercase tracking-tight text-[#0A0A0A] mb-2">Kurs bulunamadı</p>
+      <p class="font-black text-xl uppercase tracking-tight text-[#0A0A0A] mb-2">{{ __('ui.no_courses_found') }}</p>
       <p class="text-mono-sm text-[#888] mb-6">
-        @if(request('q'))"{{ request('q') }}" için sonuç yok.@else Bu kategoride henüz yayında kurs yok.@endif
+        @if(request('q'))"{{ request('q') }}" {{ __('ui.no_courses_query') }}@else{{ __('ui.no_courses_category') }}@endif
       </p>
-      <a href="{{ route('courses.index') }}" class="btn-brut-dark text-xs py-2.5">Tüm Kurslara Bak ↗</a>
+      <a href="{{ route('courses.index') }}" class="btn-brut-dark text-xs py-2.5">{{ __('ui.see_all_courses') }} ↗</a>
     </div>
     @else
     @php
+      $levelTag   = ['BEGINNER'=>'tag-lime','INTERMEDIATE'=>'tag-yellow','ADVANCED'=>'tag-red','ALL_LEVELS'=>'tag-blue'];
+      $levelLabel = [
+        'BEGINNER'     => __('ui.level_beginner'),
+        'INTERMEDIATE' => __('ui.level_intermediate'),
+        'ADVANCED'     => __('ui.level_advanced'),
+        'ALL_LEVELS'   => __('ui.level_all'),
+      ];
       $categoryColors = [
         'SAFETY'        => ['bg-[#FF2D2D]', 'text-white',      '🦺'],
         'CRANE_TYPE'    => ['bg-[#0047FF]', 'text-white',      '🏗️'],
@@ -82,8 +89,6 @@
       ];
       $fallbackBg   = ['bg-[#FF2D2D]','bg-[#0047FF]','bg-[#FFE000]','bg-[#CCFF00]','bg-[#FF3CAC]','bg-[#0A0A0A]'];
       $fallbackText = ['text-white','text-white','text-[#0A0A0A]','text-[#0A0A0A]','text-white','text-[#FFE000]'];
-      $levelTag   = ['BEGINNER'=>'tag-lime','INTERMEDIATE'=>'tag-yellow','ADVANCED'=>'tag-red','ALL_LEVELS'=>'tag-blue'];
-      $levelLabel = ['BEGINNER'=>'Başlangıç','INTERMEDIATE'=>'Orta','ADVANCED'=>'İleri','ALL_LEVELS'=>'Her Seviye'];
     @endphp
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       @foreach($courses as $i => $c)
@@ -111,7 +116,7 @@
         {{-- İçerik --}}
         <div class="p-4 flex-1 flex flex-col gap-3">
           <div class="flex flex-wrap gap-1.5">
-            @if($c->is_mandatory)<span class="tag-red text-[10px]">ZORUNLU</span>@endif
+            @if($c->is_mandatory)<span class="tag-red text-[10px]">{{ __('ui.mandatory') }}</span>@endif
             <span class="{{ $ltag }} text-[10px]">{{ $llabel }}</span>
           </div>
           <h3 class="font-black text-xs uppercase tracking-tight text-[#0A0A0A] leading-snug group-hover:text-[#0047FF] transition-colors">
@@ -119,8 +124,8 @@
           </h3>
           <p class="text-mono-sm text-[#888]">{{ $c->instructor->name ?? '—' }}</p>
           <div class="flex items-center justify-between mt-auto border-t-[2px] border-[#eee] pt-3">
-            <span class="text-mono-sm text-[#888]">{{ $c->sections_count ?? $c->sections->count() }} modül</span>
-            <span class="text-mono-sm text-[#888]">{{ $c->enrollments_count ?? 0 }} öğrenci</span>
+            <span class="text-mono-sm text-[#888]">{{ $c->sections_count ?? $c->sections->count() }} {{ __('ui.module') }}</span>
+            <span class="text-mono-sm text-[#888]">{{ $c->enrollments_count ?? 0 }} {{ __('ui.student') }}</span>
           </div>
         </div>
       </a>

@@ -1,12 +1,12 @@
 @extends('layouts.app')
-@section('title', 'Sertifikalarım – LiftAcademy')
+@section('title', __('ui.my_certificates') . ' – LiftAcademy')
 @section('content')
 
 <div class="bg-[#F5F0E8] min-h-screen">
   <section class="bg-[#0A0A0A] border-b-[3px] border-[#FFE000]">
     <div class="max-w-[1400px] mx-auto px-6 py-16">
-      <span class="tag-yellow mb-4 inline-block">SERTİFİKALARIM</span>
-      <h1 class="text-display text-[#F5F0E8] leading-none">SERTİFİKA<br>MERKEZİ</h1>
+      <span class="tag-yellow mb-4 inline-block">{{ __('ui.my_certificates') }}</span>
+      <h1 class="text-display text-[#F5F0E8] leading-none">{{ __('ui.cert_center') }}</h1>
     </div>
   </section>
   <div class="max-w-[1400px] mx-auto px-6 py-12">
@@ -22,15 +22,15 @@
           <p class="text-mono-sm text-[#888] mt-1">{{ $cert->cert_number }}</p>
           <p class="text-xs font-medium text-[#888] mt-1">{{ $cert->created_at->format('d.m.Y') }}</p>
         </div>
-        <span class="tag-lime">AKTİF</span>
+        <span class="tag-lime">{{ __('ui.cert_active') }}</span>
       </div>
     </div>
     @empty
     <div class="text-center py-24 border-[3px] border-dashed border-[#ccc]">
       <p class="text-5xl mb-4">🏆</p>
-      <p class="font-black text-2xl uppercase tracking-tight mb-2">Henüz sertifikan yok</p>
-      <p class="text-[#888] mb-6">Kurs tamamla, otomatik sertifika kazan.</p>
-      <a href="{{ route('courses.index') }}" class="btn-brut">Kurslara Bak ↗</a>
+      <p class="font-black text-2xl uppercase tracking-tight mb-2">{{ __('ui.no_certificates') }}</p>
+      <p class="text-[#888] mb-6">{{ __('ui.no_certificates_sub') }}</p>
+      <a href="{{ route('courses.index') }}" class="btn-brut">{{ __('ui.see_courses') }} ↗</a>
     </div>
     @endforelse
   </div>

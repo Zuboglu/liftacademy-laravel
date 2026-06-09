@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-@section('title', 'Kayıt Ol – LiftAcademy')
+@section('title', __('ui.register_tag') . ' – LiftAcademy')
 @section('content')
 
 <div class="min-h-screen bg-[#F5F0E8] flex">
@@ -12,7 +12,7 @@
       </a>
       <div class="mb-10">
         <h1 class="text-5xl font-black text-[#F5F0E8] uppercase leading-none tracking-tight mb-4">
-          SERTİFİKA<br><span class="text-[#CCFF00]">YOLCULUĞU</span><br>BAŞLIYOR
+          {{ __('ui.certificates') }}<br><span class="text-[#CCFF00]">{{ __('ui.start') }}</span>
         </h1>
         <p class="text-[#888] font-medium leading-relaxed">Junior'dan Trainer'a 5 kademe.</p>
       </div>
@@ -51,9 +51,9 @@
       </div>
 
       <div class="mb-8">
-        <span class="tag-black mb-4 inline-block">KAYIT OL</span>
-        <h2 class="text-3xl font-black uppercase tracking-tight text-[#0A0A0A]">Hesap oluştur</h2>
-        <p class="text-sm text-[#888] mt-2 font-medium">Ücretsiz başla, sertifika kazan.</p>
+        <span class="tag-black mb-4 inline-block">{{ __('ui.register_tag') }}</span>
+        <h2 class="text-3xl font-black uppercase tracking-tight text-[#0A0A0A]">{{ __('ui.register_title') }}</h2>
+        <p class="text-sm text-[#888] mt-2 font-medium">{{ __('ui.register_subtitle') }}</p>
       </div>
 
       @if($errors->any())
@@ -67,48 +67,48 @@
       <form method="POST" action="{{ route('register') }}" class="space-y-5" id="registerForm">
         @csrf
         <div>
-          <label for="name" class="text-mono-sm mb-2 block">AD SOYAD</label>
+          <label for="name" class="text-mono-sm mb-2 block">{{ __('ui.register_name') }}</label>
           <input id="name" type="text" name="name" value="{{ old('name') }}" required
             placeholder="Adınız Soyadınız" class="input-brut">
         </div>
         <div>
-          <label for="email" class="text-mono-sm mb-2 block">E-POSTA</label>
+          <label for="email" class="text-mono-sm mb-2 block">{{ __('ui.login_email') }}</label>
           <input id="email" type="email" name="email" value="{{ old('email') }}" required
             placeholder="ornek@firma.com" class="input-brut">
         </div>
         <div>
-          <label for="password" class="text-mono-sm mb-2 block">ŞİFRE</label>
+          <label for="password" class="text-mono-sm mb-2 block">{{ __('ui.register_password') }}</label>
           <input id="password" type="password" name="password" required
-            placeholder="En az 8 karakter" class="input-brut" oninput="checkStrength(this.value)">
+            placeholder="{{ __('ui.register_password_min') }}" class="input-brut" oninput="checkStrength(this.value)">
           <div class="mt-2 h-1.5 border border-[#ccc] overflow-hidden">
             <div id="strengthBar" class="h-full w-0 transition-all duration-300 bg-[#FF2D2D]"></div>
           </div>
           <p id="strengthText" class="text-[10px] font-mono uppercase tracking-wider text-[#888] mt-1"></p>
         </div>
         <div>
-          <label for="password_confirmation" class="text-mono-sm mb-2 block">ŞİFRE TEKRAR</label>
+          <label for="password_confirmation" class="text-mono-sm mb-2 block">{{ __('ui.register_confirm') }}</label>
           <input id="password_confirmation" type="password" name="password_confirmation" required
-            placeholder="Şifreyi tekrarlayın" class="input-brut">
+            placeholder="{{ __('ui.register_confirm_ph') }}" class="input-brut">
         </div>
         <div>
-          <label class="text-mono-sm mb-2 block">ROL</label>
+          <label class="text-mono-sm mb-2 block">{{ __('ui.register_role') }}</label>
           <select name="role" class="input-brut">
-            <option value="STUDENT" {{ old('role','STUDENT')==='STUDENT'?'selected':'' }}>Öğrenci</option>
-            <option value="INSTRUCTOR" {{ old('role')==='INSTRUCTOR'?'selected':'' }}>Eğitmen</option>
+            <option value="STUDENT" {{ old('role','STUDENT')==='STUDENT'?'selected':'' }}>{{ __('ui.register_role_student') }}</option>
+            <option value="INSTRUCTOR" {{ old('role')==='INSTRUCTOR'?'selected':'' }}>{{ __('ui.register_role_inst') }}</option>
           </select>
         </div>
         <div class="flex items-start gap-2">
           <input type="checkbox" id="terms" name="terms" required class="mt-1 w-4 h-4 border-[2px] border-[#0A0A0A] shrink-0">
           <label for="terms" class="text-xs font-medium text-[#555] cursor-pointer">
-            <span class="underline font-bold text-[#0A0A0A]">Kullanım Koşulları</span> ve <span class="underline font-bold text-[#0A0A0A]">Gizlilik Politikası</span>'nı kabul ediyorum
+            <span class="underline font-bold text-[#0A0A0A]">{{ __('ui.register_terms') }}</span> {{ __('ui.register_terms_accept') }} <span class="underline font-bold text-[#0A0A0A]">{{ __('ui.register_privacy') }}</span>
           </label>
         </div>
         <button type="submit" class="btn-brut-dark w-full justify-center py-4 text-sm">
-          Hesap Oluştur ↗
+          {{ __('ui.register_submit') }} ↗
         </button>
         <p class="text-center text-sm font-medium text-[#888]">
-          Zaten hesabın var mı?
-          <a href="{{ route('login') }}" class="text-[#0A0A0A] font-bold underline hover:text-[#0047FF]">Giriş yap</a>
+          {{ __('ui.register_have_account') }}
+          <a href="{{ route('login') }}" class="text-[#0A0A0A] font-bold underline hover:text-[#0047FF]">{{ __('ui.register_login') }}</a>
         </p>
       </form>
     </div>
@@ -124,7 +124,7 @@ function checkStrength(v) {
   if (/[A-Z]/.test(v)) score++;
   if (/[0-9]/.test(v)) score++;
   if (/[^A-Za-z0-9]/.test(v)) score++;
-  const levels = [['0%','',''],['25%','Zayıf','#FF2D2D'],['50%','Orta','#FF9500'],['75%','İyi','#FFE000'],['100%','Güçlü','#CCFF00']];
+  const levels = [['0%','',''],['25%','{{ __("ui.strength_weak") }}','#FF2D2D'],['50%','{{ __("ui.strength_medium") }}','#FF9500'],['75%','{{ __("ui.strength_good") }}','#FFE000'],['100%','{{ __("ui.strength_strong") }}','#CCFF00']];
   const [w,l,c] = levels[score];
   bar.style.width = w;
   bar.style.background = c;

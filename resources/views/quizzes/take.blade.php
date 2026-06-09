@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $quiz->title . ' – Sınav – LiftAcademy')
+@section('title', $quiz->title . ' – ' . __('ui.quiz_label') . ' – LiftAcademy')
 @section('content')
 
 <div class="min-h-screen bg-[#0A0A0A] text-[#F5F0E8]">
@@ -8,13 +8,13 @@
     {{-- Header --}}
     <div class="flex items-center justify-between mb-8">
       <div>
-        <p class="font-mono text-[10px] text-[#555] uppercase tracking-widest mb-1">SINAV</p>
+        <p class="font-mono text-[10px] text-[#555] uppercase tracking-widest mb-1">{{ __('ui.quiz_label') }}</p>
         <h1 class="font-black text-[#FFE000] uppercase tracking-tight text-xl">{{ $quiz->title }}</h1>
       </div>
       <div class="text-right">
         @if($quiz->time_limit)
         <div id="timer-box" class="border-[2px] border-[#FFE000] px-4 py-2 text-center">
-          <p class="font-mono text-[9px] text-[#555] uppercase tracking-widest">KALAN SÜRE</p>
+          <p class="font-mono text-[9px] text-[#555] uppercase tracking-widest">{{ __('ui.time_remaining') }}</p>
           <p id="timer" class="font-black text-[#FFE000] text-xl tabular-nums">{{ sprintf('%02d:%02d', $quiz->time_limit, 0) }}</p>
         </div>
         @endif
@@ -58,11 +58,11 @@
       {{-- Gönder --}}
       <div class="flex items-center justify-between pt-4 border-t border-[#1e1e1e]">
         <p id="unanswered-msg" class="font-mono text-[10px] text-[#FF2D2D] uppercase tracking-wide hidden">
-          Lütfen tüm soruları cevaplayın
+          {{ __('ui.answer_all') }}
         </p>
         <button type="button" onclick="submitQuiz()" id="submit-btn"
           class="ml-auto btn-brut text-sm px-8 py-4 opacity-40 cursor-not-allowed" disabled>
-          Sınavı Bitir ↗
+          {{ __('ui.finish_quiz') }} ↗
         </button>
       </div>
     </form>
@@ -78,7 +78,6 @@ const answered = new Set();
 function onAnswer(qi, qid) {
   answered.add(qid);
 
-  // Seçilen option'ı göster
   const block = document.getElementById('q-' + qi);
   block.querySelectorAll('.option-label').forEach(l => {
     const inp = l.querySelector('input[type=radio]');
@@ -88,19 +87,15 @@ function onAnswer(qi, qid) {
     l.querySelector('.option-dot').style.borderColor = inp.checked ? '#FFE000' : '#333';
   });
 
-  // Opacity kaldır
   block.classList.remove('opacity-60');
 
-  // Sonraki soruyu aktif et
   const next = document.querySelector('[data-q="' + (qi+1) + '"]');
   if (next) next.classList.remove('opacity-60');
 
-  // İlerleme
   const pct = Math.round(answered.size / totalQ * 100);
   document.getElementById('progress-bar').style.width = pct + '%';
   document.getElementById('progress-text').textContent = answered.size + ' / ' + totalQ;
 
-  // Tümü cevaplandıysa butonu aktif et
   if (answered.size === totalQ) {
     const btn = document.getElementById('submit-btn');
     btn.disabled = false;
@@ -119,7 +114,6 @@ function submitQuiz() {
 window.submitQuiz = submitQuiz;
 
 @if($quiz->time_limit)
-// Sayaç
 let totalSec = {{ $quiz->time_limit * 60 }};
 const timerEl = document.getElementById('timer');
 const interval = setInterval(() => {

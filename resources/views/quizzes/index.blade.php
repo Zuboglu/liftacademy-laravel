@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Sınavlar – LiftAcademy')
+@section('title', __('ui.quizzes') . ' – LiftAcademy')
 @section('content')
 
 <div class="min-h-screen bg-[#F5F0E8]">
@@ -8,16 +8,15 @@
   <div class="bg-[#0A0A0A] border-b-[3px] border-[#FFE000] px-6 py-12">
     <div class="max-w-[1400px] mx-auto">
       <div class="flex items-center gap-3 mb-8">
-        <span class="tag-yellow text-[10px]">{{ $quizzes->total() }} SINAV</span>
-        <span class="tag-lime text-[10px]">100 PUAN SİSTEMİ</span>
+        <span class="tag-yellow text-[10px]">{{ $quizzes->total() }} {{ __('ui.quiz_count') }}</span>
+        <span class="tag-lime text-[10px]">{{ __('ui.quiz_system') }}</span>
       </div>
       <h1 class="font-black text-[#F5F0E8] uppercase tracking-tight leading-none mb-4"
         style="font-size:clamp(2.5rem,5vw,5rem);letter-spacing:-0.04em">
-        YETKİNLİK<br><span class="text-[#FFE000]">SINAVLARI</span>
+        {{ __('ui.competency_exams') }}
       </h1>
       <p class="text-[#555] font-medium max-w-xl text-sm leading-relaxed">
-        Kursu tamamladıktan sonra sınava giriş hakkı açılır. Soruların tümü çoktan seçmeli, puanlama 100 üzerinden yapılır.
-        Geçer notla bitirince sertifikanız otomatik oluşturulur.
+        {{ __('ui.quiz_intro') }}
       </p>
     </div>
   </div>
@@ -32,8 +31,8 @@
 
     @if($quizzes->isEmpty())
     <div class="text-center py-20 border-[3px] border-[#0A0A0A]" style="box-shadow:6px 6px 0 #0A0A0A">
-      <p class="font-black text-xl uppercase tracking-tight text-[#0A0A0A] mb-2">Henüz sınav yok</p>
-      <a href="{{ route('courses.index') }}" class="btn-brut-dark text-xs py-2.5">Kurslara Bak ↗</a>
+      <p class="font-black text-xl uppercase tracking-tight text-[#0A0A0A] mb-2">{{ __('ui.no_quizzes') }}</p>
+      <a href="{{ route('courses.index') }}" class="btn-brut-dark text-xs py-2.5">{{ __('ui.see_courses') }} ↗</a>
     </div>
     @else
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -53,14 +52,14 @@
         {{-- Header --}}
         <div class="{{ $passed ? 'bg-[#CCFF00] text-[#0A0A0A]' : 'bg-[#0A0A0A] text-[#F5F0E8]' }} px-5 py-4 border-b-[3px] border-[#0A0A0A] flex items-center justify-between">
           <span class="font-mono text-[10px] uppercase tracking-widest opacity-60">
-            {{ $quiz->course->title ?? 'GENEL' }}
+            {{ $quiz->course->title ?? __('ui.general') }}
           </span>
           @if($passed)
-          <span class="font-black text-[10px] uppercase tracking-widest">✓ GEÇTİ</span>
+          <span class="font-black text-[10px] uppercase tracking-widest">✓ {{ __('ui.passed') }}</span>
           @elseif($bestScore !== null)
           <span class="font-black text-[10px] text-[#FFE000] uppercase">%{{ $bestScore }}</span>
           @else
-          <span class="font-mono text-[10px] opacity-40">YENİ</span>
+          <span class="font-mono text-[10px] opacity-40">{{ __('ui.new') }}</span>
           @endif
         </div>
 
@@ -74,17 +73,17 @@
           @endif
           <div class="flex flex-wrap gap-3 mt-auto pt-3 border-t-[2px] border-[#eee]">
             <div class="flex items-center gap-1.5">
-              <span class="text-mono-sm text-[#888]">{{ $quiz->questions_count }} soru</span>
+              <span class="text-mono-sm text-[#888]">{{ $quiz->questions_count }} {{ __('ui.questions') }}</span>
             </div>
             <div class="flex items-center gap-1.5">
-              <span class="text-mono-sm text-[#888]">Geçer: %{{ $quiz->passing_score }}</span>
+              <span class="text-mono-sm text-[#888]">{{ __('ui.passing') }}: %{{ $quiz->passing_score }}</span>
             </div>
             <div class="flex items-center gap-1.5">
-              <span class="text-mono-sm text-[#888]">{{ $quiz->attempts }} hak</span>
+              <span class="text-mono-sm text-[#888]">{{ $quiz->attempts }} {{ __('ui.attempts') }}</span>
             </div>
             @if($quiz->time_limit)
             <div class="flex items-center gap-1.5">
-              <span class="text-mono-sm text-[#888]">{{ $quiz->time_limit }} dak.</span>
+              <span class="text-mono-sm text-[#888]">{{ $quiz->time_limit }} {{ __('ui.minutes') }}</span>
             </div>
             @endif
           </div>
