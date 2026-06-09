@@ -15,13 +15,12 @@ class CourseController extends Controller
     public function index(Request $request)
     {
         $categories = [
-            'all'           => '★ Tümü',
-            'SAFETY'        => '🦺 İSG & Güvenlik',
-            'CRANE_TYPE'    => '🏗️ Vinç Türleri',
-            'OPERATION'     => '⚙️ Operasyon',
-            'TECHNICAL'     => '🔧 Teknik',
-            'RISK'          => '⚠️ Risk Yönetimi',
-            'CERTIFICATION' => '🪪 Sertifikasyon',
+            'all'        => '★ Tümü',
+            'SAFETY'     => '🦺 İSG & Güvenlik',
+            'CRANE_TYPE' => '🏗️ Vinç Türleri',
+            'OPERATION'  => '⚙️ Operasyon',
+            'TECHNICAL'  => '🔧 Teknik',
+            'RISK'       => '⚠️ Risk Yönetimi',
         ];
 
         $query = Course::where('published', true)->with('instructor')->withCount(['enrollments','sections']);

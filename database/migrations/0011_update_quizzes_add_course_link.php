@@ -12,7 +12,8 @@ return new class extends Migration
         if (Schema::hasTable('quiz_questions')) {
             Schema::table('quiz_questions', function (Blueprint $table) {
                 if (!Schema::hasColumn('quiz_questions', 'created_at')) {
-                    $table->timestamps()->nullable();
+                    $table->timestamp('created_at')->nullable();
+                    $table->timestamp('updated_at')->nullable();
                 }
             });
         }

@@ -9,6 +9,7 @@
             <nav class="hidden md:flex items-center gap-1">
                 <a href="{{ route('courses.index') }}" class="font-bold text-sm uppercase tracking-wider text-[#0A0A0A] px-4 py-2 hover:bg-[#FFE000] border-[2px] border-transparent hover:border-[#0A0A0A] transition-all duration-100 {{ request()->routeIs('courses.*') ? 'bg-[#FFE000] !border-[#0A0A0A]' : '' }}">Kurslar</a>
                 <a href="{{ route('quizzes.index') }}" class="font-bold text-sm uppercase tracking-wider text-[#0A0A0A] px-4 py-2 hover:bg-[#FFE000] border-[2px] border-transparent hover:border-[#0A0A0A] transition-all duration-100 {{ request()->routeIs('quizzes.*') ? 'bg-[#FFE000] !border-[#0A0A0A]' : '' }}">Sınavlar</a>
+                <a href="{{ route('certificates.index') }}" class="font-bold text-sm uppercase tracking-wider text-[#0A0A0A] px-4 py-2 hover:bg-[#FFE000] border-[2px] border-transparent hover:border-[#0A0A0A] transition-all duration-100 {{ request()->routeIs('certificates.*') ? 'bg-[#FFE000] !border-[#0A0A0A]' : '' }}">Sertifikalar</a>
                 @auth
                 <a href="{{ route('dashboard') }}" class="font-bold text-sm uppercase tracking-wider text-[#0A0A0A] px-4 py-2 hover:bg-[#FFE000] border-[2px] border-transparent hover:border-[#0A0A0A] transition-all duration-100 {{ request()->routeIs('dashboard') ? 'bg-[#FFE000] !border-[#0A0A0A]' : '' }}">Panel</a>
                 @endauth
@@ -72,6 +73,7 @@
     <div class="hidden md:hidden border-t-[3px] border-[#0A0A0A] bg-[#F5F0E8]">
         <a href="{{ route('courses.index') }}" class="block px-6 py-3 font-bold text-sm uppercase tracking-wider border-b-[2px] border-[#0A0A0A] hover:bg-[#FFE000]">Kurslar</a>
         <a href="{{ route('quizzes.index') }}" class="block px-6 py-3 font-bold text-sm uppercase tracking-wider border-b-[2px] border-[#0A0A0A] hover:bg-[#FFE000]">Sınavlar</a>
+        <a href="{{ route('certificates.index') }}" class="block px-6 py-3 font-bold text-sm uppercase tracking-wider border-b-[2px] border-[#0A0A0A] hover:bg-[#FFE000]">Sertifikalar</a>
         @auth
         <a href="{{ route('dashboard') }}" class="block px-6 py-3 font-bold text-sm uppercase tracking-wider border-b-[2px] border-[#0A0A0A] hover:bg-[#FFE000]">Panel</a>
         <div class="p-4">
