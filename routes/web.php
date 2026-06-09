@@ -5,9 +5,20 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\Admin\AdminCertificateController;
 use App\Http\Controllers\Admin\AdminCourseController;
 use App\Http\Controllers\Admin\AdminQuizController;
+use App\Http\Controllers\Admin\AdminUserController;
 use Illuminate\Support\Facades\Route;
+
+// ── Dil değiştir ────────────────────────────────────────────────────────
+Route::get('/lang/{locale}', function (string $locale) {
+    $allowed = ['tr','en','de','zh','az','ru','ar','ka'];
+    if (in_array($locale, $allowed)) {
+        session(['locale' => $locale]);
+    }
+    return back();
+})->name('lang.switch');
 
 // ── Public ──────────────────────────────────────────────────────────────
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -83,4 +94,21 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/quizzes/{quiz}/questions',   [AdminQuizController::class, 'storeQuestion'])->name('questions.store');
     Route::put('/questions/{question}',         [AdminQuizController::class, 'updateQuestion'])->name('questions.update');
     Route::delete('/questions/{question}',       [AdminQuizController::class, 'destroyQuestion'])->name('questions.destroy');
+
+    // Sertifika CRUD
+    Route::get('/certificates',                       [AdminCertificateController::class, 'index'])->name('certificates.index');
+    Route::get('/certificates/create',                [AdminCertificateController::class, 'create'])->name('certificates.create');
+    Route::post('/certificates',                      [AdminCertificateController::class, 'store'])->name('certificates.store');
+    Route::get('/certificates/{certificate}',         [AdminCertificateController::class, 'show'])->name('certificates.show');
+    Route::get('/certificates/{certificate}/edit',    [AdminCertificateController::class, 'edit'])->name('certificates.edit');
+    Route::put('/certificates/{certificate}',         [AdminCertificateController::class, 'update'])->name('certificates.update');
+    Route::delete('/certificates/{certificate}',      [AdminCertificateController::class, 'destroy'])->name('certificates.destroy');
+
+    // Kullanıcı yönetimi
+    Route::get('/users',                    [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/progress',           [AdminUserController::class, 'progress'])->name('users.progress');
+    Route::get('/users/{user}',             [AdminUserController::class, 'show'])->name('users.show');
+    Route::get('/users/{user}/edit',        [AdminUserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}',             [AdminUserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}',          [AdminUserController::class, 'destroy'])->name('users.destroy');
 });
