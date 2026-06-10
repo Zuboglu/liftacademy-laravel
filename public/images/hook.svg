@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12 0 100 900">
+  <defs>
+    <clipPath id="hc">
+      <path d="M5,634 L75,634 L79,682 L40,716 L1,682 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Ropes -->
+  <line x1="31" y1="0" x2="31" y2="618" stroke="#2A2A2A" stroke-width="3"/>
+  <line x1="49" y1="0" x2="49" y2="618" stroke="#2A2A2A" stroke-width="3"/>
+
+  <!-- Rope attachment plate -->
+  <rect x="23" y="613" width="34" height="22" rx="9" fill="#B8900A" stroke="#111" stroke-width="2.5"/>
+  <circle cx="31" cy="624" r="3.5" fill="#111"/>
+  <circle cx="49" cy="624" r="3.5" fill="#111"/>
+
+  <!-- Block body -->
+  <path d="M5,634 L75,634 L79,682 L40,716 L1,682 Z" fill="#FFD000"/>
+
+  <!-- Hazard stripes -->
+  <g clip-path="url(#hc)" stroke="#111" stroke-width="11">
+    <line x1="-10" y1="634" x2="82"  y2="726"/>
+    <line x1="6"   y1="620" x2="98"  y2="712"/>
+    <line x1="-26" y1="648" x2="66"  y2="740"/>
+    <line x1="22"  y1="606" x2="114" y2="698"/>
+    <line x1="-42" y1="662" x2="50"  y2="754"/>
+    <line x1="38"  y1="592" x2="130" y2="684"/>
+  </g>
+
+  <!-- Block outline -->
+  <path d="M5,634 L75,634 L79,682 L40,716 L1,682 Z" fill="none" stroke="#111" stroke-width="3.5"/>
+
+  <!-- Bolts -->
+  <circle cx="16" cy="652" r="5.5" fill="#1E1E1E" stroke="#666" stroke-width="1.5"/>
+  <line x1="13" y1="652" x2="19" y2="652" stroke="#888" stroke-width="1.5"/>
+  <line x1="16" y1="649" x2="16" y2="655" stroke="#888" stroke-width="1.5"/>
+
+  <circle cx="64" cy="652" r="5.5" fill="#1E1E1E" stroke="#666" stroke-width="1.5"/>
+  <line x1="61" y1="652" x2="67" y2="652" stroke="#888" stroke-width="1.5"/>
+  <line x1="64" y1="649" x2="64" y2="655" stroke="#888" stroke-width="1.5"/>
+
+  <circle cx="13" cy="695" r="5.5" fill="#1E1E1E" stroke="#666" stroke-width="1.5"/>
+  <line x1="10" y1="695" x2="16" y2="695" stroke="#888" stroke-width="1.5"/>
+  <line x1="13" y1="692" x2="13" y2="698" stroke="#888" stroke-width="1.5"/>
+
+  <circle cx="67" cy="695" r="5.5" fill="#1E1E1E" stroke="#666" stroke-width="1.5"/>
+  <line x1="64" y1="695" x2="70" y2="695" stroke="#888" stroke-width="1.5"/>
+  <line x1="67" y1="692" x2="67" y2="698" stroke="#888" stroke-width="1.5"/>
+
+  <!-- Swivel joint -->
+  <line x1="40" y1="716" x2="40" y2="732" stroke="#1E1E1E" stroke-width="5"/>
+  <ellipse cx="40" cy="740" rx="11" ry="9" fill="#2E2E2E" stroke="#111" stroke-width="2"/>
+  <ellipse cx="40" cy="740" rx="5" ry="4" fill="#444" stroke="none"/>
+
+  <!-- Hook shaft -->
+  <line x1="40" y1="749" x2="40" y2="780" stroke="#222" stroke-width="11" stroke-linecap="round"/>
+
+  <!-- J kanca — yuvarlak dip, ucu dışa kıvrık -->
+  <path d="M40,780 C40,852 -8,858 -8,816 C-8,786 4,770 16,768"
+        stroke="#222" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Outer ridge -->
+  <path d="M43,756 C47,770 47,784 43,796" stroke="#555" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="3,3"/>
+</svg>

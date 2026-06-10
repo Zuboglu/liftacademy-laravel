@@ -101,21 +101,21 @@
   </div>
 
   {{-- ── CHAT PENCERE ── --}}
-  <div id="chat-box" style="display:none;flex-direction:column;width:400px;height:580px;border-radius:20px;overflow:hidden;">
+  <div id="chat-box" style="display:none;flex-direction:column;width:800px;height:760px;border-radius:20px;overflow:hidden;">
 
     {{-- Header --}}
-    <div style="padding:16px 18px;background:linear-gradient(135deg,#1a1400 0%,#0d0d0d 100%);border-bottom:1px solid rgba(255,210,0,0.15);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(255,210,0,0.4);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <div style="padding:20px 22px;background:linear-gradient(135deg,#1a1400 0%,#0d0d0d 100%);border-bottom:1px solid rgba(255,210,0,0.15);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(255,210,0,0.4);">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
         </div>
         <div>
-          <p style="font-weight:700;font-size:13px;color:#fff;margin:0;letter-spacing:0.3px;">LiftAcademy AI</p>
-          <div style="display:flex;align-items:center;gap:5px;margin-top:2px;">
-            <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;box-shadow:0 0 6px #4ade80;"></span>
-            <span style="font-size:10px;color:#888;font-family:monospace;letter-spacing:0.5px;">Çevrimiçi · Hemen yanıt veriyor</span>
+          <p style="font-weight:700;font-size:16px;color:#fff;margin:0;letter-spacing:0.3px;">LiftAcademy AI</p>
+          <div style="display:flex;align-items:center;gap:5px;margin-top:3px;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;box-shadow:0 0 6px #4ade80;"></span>
+            <span style="font-size:12px;color:#888;font-family:monospace;letter-spacing:0.5px;">Çevrimiçi · Hemen yanıt veriyor</span>
           </div>
         </div>
       </div>
@@ -130,23 +130,23 @@
     </div>
 
     {{-- Mesajlar --}}
-    <div id="chat-messages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;">
+    <div id="chat-messages" style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;">
 
       {{-- Karşılama --}}
-      <div class="chat-msg-row" style="display:flex;gap:8px;align-items:flex-end;">
-        <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div class="chat-msg-row" style="display:flex;gap:10px;align-items:flex-end;">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
-        <div style="max-width:260px;">
-          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:18px 18px 18px 4px;padding:10px 14px;font-size:12.5px;color:#e0e0e0;line-height:1.6;">
+        <div style="max-width:400px;">
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:18px 18px 18px 4px;padding:13px 18px;font-size:14px;color:#e0e0e0;line-height:1.6;">
             Merhaba! 👋 Ben LiftAcademy AI asistanıyım.<br>Kurslar, sınavlar, sertifikalar veya vinç operatörü eğitimi hakkında yardımcı olabilirim.
           </div>
-          <p style="font-size:10px;color:#444;margin:4px 0 0 4px;">Az önce</p>
+          <p style="font-size:11px;color:#444;margin:5px 0 0 5px;">Az önce</p>
         </div>
       </div>
 
       {{-- Hızlı cevap butonları --}}
-      <div id="quick-replies" style="display:flex;flex-wrap:wrap;gap:6px;padding-left:36px;">
+      <div id="quick-replies" style="display:flex;flex-wrap:wrap;gap:8px;padding-left:46px;">
         <button class="quick-btn" onclick="quickSend(this,'Kurslar hakkında bilgi ver')">📚 Kurslar</button>
         <button class="quick-btn" onclick="quickSend(this,'Sertifikasyon süreci nasıl?')">🏆 Sertifika</button>
         <button class="quick-btn" onclick="quickSend(this,'Sınavlar nasıl çalışır?')">📝 Sınavlar</button>
@@ -170,35 +170,35 @@
     </div>
 
     {{-- Input --}}
-    <div style="padding:12px 14px;background:rgba(0,0,0,0.4);border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
-      <div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:6px 6px 6px 16px;transition:border-color .2s;" id="chat-input-wrap">
+    <div style="padding:14px 18px;background:rgba(0,0,0,0.4);border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
+      <div style="display:flex;gap:10px;align-items:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:8px 8px 8px 20px;transition:border-color .2s;" id="chat-input-wrap">
         <input id="chat-input" type="text" placeholder="Bir şey sorun..." maxlength="500"
-          style="flex:1;background:transparent;border:none;outline:none;color:#f0f0f0;font-size:13px;font-family:inherit;"
+          style="flex:1;background:transparent;border:none;outline:none;color:#f0f0f0;font-size:15px;font-family:inherit;"
           onfocus="document.getElementById('chat-input-wrap').style.borderColor='rgba(255,210,0,0.5)'"
           onblur="document.getElementById('chat-input-wrap').style.borderColor='rgba(255,255,255,0.1)'">
         <button id="chat-send"
-          style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s;box-shadow:0 4px 12px rgba(255,210,0,0.35);"
+          style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s;box-shadow:0 4px 12px rgba(255,210,0,0.35);"
           onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 18px rgba(255,210,0,0.5)'"
           onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 12px rgba(255,210,0,0.35)'">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>
         </button>
       </div>
-      <p style="text-align:center;font-size:9.5px;color:#333;margin:7px 0 0;letter-spacing:0.5px;">Powered by DeepSeek AI · LiftAcademy</p>
+      <p style="text-align:center;font-size:11px;color:#333;margin:8px 0 0;letter-spacing:0.5px;">Powered by DeepSeek AI · LiftAcademy</p>
     </div>
 
   </div>
 
   {{-- ── TOGGLE BUTON ── --}}
   <button id="chat-toggle"
-    style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(255,210,0,0.45);transition:transform .2s,box-shadow .2s;position:relative;"
+    style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(255,210,0,0.45);transition:transform .2s,box-shadow .2s;position:relative;"
     title="AI Asistan ile konuş">
-    <svg id="chat-toggle-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <svg id="chat-toggle-icon" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
     {{-- Bildirim noktası --}}
-    <span id="chat-dot" style="position:absolute;top:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:#FF2D2D;border:2.5px solid #F5F0E8;display:block;"></span>
+    <span id="chat-dot" style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:#FF2D2D;border:2.5px solid #F5F0E8;display:block;"></span>
   </button>
 
 </div>
@@ -220,8 +220,8 @@
   let isOpen  = false;
   let loading = false;
 
-  const CLOSE_ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-  const CHAT_ICON  = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
+  const CLOSE_ICON = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+  const CHAT_ICON  = `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
 
   // Balon kapat
   window.closeBubble = function() {
@@ -272,14 +272,14 @@
     row.style.cssText = `display:flex;gap:8px;align-items:flex-end;${isAi ? '' : 'flex-direction:row-reverse;'}`;
 
     const avatar = isAi ? `
-      <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FFD200,#FF9500);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </div>` : `
-      <div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;">👤</div>`;
+      <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px;">👤</div>`;
 
     const bubble = isAi
-      ? `<div style="max-width:240px;"><div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:18px 18px 18px 4px;padding:10px 14px;font-size:12.5px;color:#e0e0e0;line-height:1.65;">${escHtml(text)}</div></div>`
-      : `<div style="max-width:240px;"><div style="background:linear-gradient(135deg,rgba(255,210,0,0.18),rgba(255,149,0,0.12));border:1px solid rgba(255,210,0,0.22);border-radius:18px 18px 4px 18px;padding:10px 14px;font-size:12.5px;color:#f5f5f5;line-height:1.65;">${escHtml(text)}</div></div>`;
+      ? `<div style="max-width:440px;"><div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:18px 18px 18px 4px;padding:13px 18px;font-size:14px;color:#e0e0e0;line-height:1.65;">${escHtml(text)}</div></div>`
+      : `<div style="max-width:440px;"><div style="background:linear-gradient(135deg,rgba(255,210,0,0.18),rgba(255,149,0,0.12));border:1px solid rgba(255,210,0,0.22);border-radius:18px 18px 4px 18px;padding:13px 18px;font-size:14px;color:#f5f5f5;line-height:1.65;">${escHtml(text)}</div></div>`;
 
     row.innerHTML = avatar + bubble;
     messages.appendChild(row);

@@ -2,10 +2,18 @@
 @section('title', 'LiftAcademy – ' . __('ui.home_tagline'))
 @section('content')
 
-<div class="bg-[#F5F0E8] text-[#0A0A0A] min-h-screen">
+{{-- HOOK DECORATIONS (position:fixed, parallax scroll) --}}
+<div id="hook-left" aria-hidden="true" style="position:fixed;top:-400px;left:75px;width:80px;z-index:20;pointer-events:none;opacity:1;">
+  <img src="/images/hook.svg" width="80" height="900" alt="">
+</div>
+<div id="hook-right" aria-hidden="true" style="position:fixed;top:-400px;right:75px;width:80px;z-index:20;pointer-events:none;opacity:1;transform:scaleX(-1);">
+  <img src="/images/hook.svg" width="80" height="900" alt="">
+</div>
+
+<div class="text-[#0A0A0A] min-h-screen relative z-10">
 
   {{-- HERO --}}
-  <section class="max-w-[1400px] mx-auto px-6 pt-16 pb-0">
+  <section class="max-w-[1400px] mx-auto px-6 pt-16 pb-0 relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-start mb-10">
       <div>
         <div class="flex flex-wrap items-center gap-3 mb-6">
@@ -507,6 +515,26 @@ window.CV_UI = {
   singleMode: "{{ __('ui.cv_single_mode') }}",
   thresh:     "{{ __('ui.cv_safety_thresh') }}",
 };
+</script>
+<script>
+/* Hook parallax — smooth scroll follow */
+(function(){
+  var L=document.getElementById('hook-left'),R=document.getElementById('hook-right');
+  if(!L||!R) return;
+  var cur=0,tgt=0,raf=null;
+  window.addEventListener('scroll',function(){
+    tgt=Math.min(window.scrollY*0.25,400);
+    if(!raf) raf=requestAnimationFrame(upd);
+  },{passive:true});
+  function upd(){
+    cur+=(tgt-cur)*0.12;
+    var y=cur.toFixed(1);
+    L.style.transform='translateY('+y+'px)';
+    R.style.transform='scaleX(-1) translateY('+y+'px)';
+    if(Math.abs(tgt-cur)>0.1){raf=requestAnimationFrame(upd);}
+    else{cur=tgt;raf=null;}
+  }
+})();
 </script>
 <script>
 (function(){

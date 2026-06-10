@@ -2,7 +2,14 @@
 @section('title', __('ui.my_certificates') . ' – LiftAcademy')
 @section('content')
 
-<div class="bg-[#F5F0E8] min-h-screen">
+<div id="hook-left" aria-hidden="true" style="position:fixed;top:-400px;left:75px;width:80px;z-index:20;pointer-events:none;opacity:1;">
+  <img src="/images/hook.svg" width="80" height="900" alt="">
+</div>
+<div id="hook-right" aria-hidden="true" style="position:fixed;top:-400px;right:75px;width:80px;z-index:20;pointer-events:none;opacity:1;transform:scaleX(-1);">
+  <img src="/images/hook.svg" width="80" height="900" alt="">
+</div>
+
+<div class="min-h-screen relative z-10">
   <section class="bg-[#0A0A0A] border-b-[3px] border-[#FFE000]">
     <div class="max-w-[1400px] mx-auto px-6 py-16">
       <span class="tag-yellow mb-4 inline-block">{{ __('ui.my_certificates') }}</span>
@@ -36,3 +43,25 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+(function(){
+  var L=document.getElementById('hook-left'),R=document.getElementById('hook-right');
+  if(!L||!R) return;
+  var cur=0,tgt=0,raf=null;
+  window.addEventListener('scroll',function(){
+    tgt=Math.min(window.scrollY*0.25,400);
+    if(!raf) raf=requestAnimationFrame(upd);
+  },{passive:true});
+  function upd(){
+    cur+=(tgt-cur)*0.12;
+    var y=cur.toFixed(1);
+    L.style.transform='translateY('+y+'px)';
+    R.style.transform='scaleX(-1) translateY('+y+'px)';
+    if(Math.abs(tgt-cur)>0.1){raf=requestAnimationFrame(upd);}
+    else{cur=tgt;raf=null;}
+  }
+})();
+</script>
+@endpush
