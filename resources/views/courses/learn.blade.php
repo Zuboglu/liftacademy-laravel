@@ -122,7 +122,6 @@
                   <p class="font-mono text-[9px] text-[#555] uppercase mt-0.5">
                     {{ $lesson->type }}
                     @if($lesson->duration) · {{ gmdate('i:s', $lesson->duration) }} @endif
-                    @if($lesson->is_free)<span class="text-[#FFE000]">ÜCRETSİZ</span>@endif
                   </p>
                 </div>
               </button>
@@ -145,9 +144,15 @@ const COMPLETE_URLS = {
   {{ $lesson->id }}: "{{ route('courses.lesson.complete', [$course->slug, $lesson->id]) }}",
   @endforeach
 };
+const PROGRESS_URLS = {
+  @foreach($course->sections->flatMap(fn($s) => $s->lessons) as $lesson)
+  {{ $lesson->id }}: "{{ route('courses.lesson.progress', [$course->slug, $lesson->id]) }}",
+  @endforeach
+};
 const CSRF = document.querySelector('meta[name="csrf-token"]').content;
 let currentLessonId = null;
 let videoCompleteTimer = null;
+let progressInterval = null;
 let allVideosCompleted = {{ $allVideosCompleted ? 'true' : 'false' }};
 
 function loadLesson(id, title, type, videoSrc, videoUrl) {
@@ -210,13 +215,29 @@ window.loadLesson = loadLesson;
 
 function setupVideoCompletion(player) {
   clearTimeout(videoCompleteTimer);
+  clearInterval(progressInterval);
+
+  // Her 15 saniyede bir kısmi ilerlemeyi kaydet
+  progressInterval = setInterval(function() {
+    if (!currentLessonId || !player.duration || player.paused) return;
+    const watched = Math.round(player.currentTime);
+    if (watched < 2) return;
+    fetch(PROGRESS_URLS[currentLessonId], {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF },
+      body: JSON.stringify({ watched_sec: watched })
+    }).catch(() => {});
+  }, 15000);
+
   player.onended = function() {
+    clearInterval(progressInterval);
     markComplete();
   };
   // %90 izlenince de tamamlandı say
   player.ontimeupdate = function() {
     if (player.duration && (player.currentTime / player.duration) >= 0.9) {
       player.ontimeupdate = null;
+      clearInterval(progressInterval);
       markComplete();
     }
   };

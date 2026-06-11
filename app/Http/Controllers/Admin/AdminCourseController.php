@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CertificateConfig;
 use App\Models\Course;
+use App\Models\Progress;
 use App\Models\Section;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class AdminCourseController extends Controller
@@ -55,7 +58,30 @@ class AdminCourseController extends Controller
     public function show(Course $course)
     {
         $course->load(['sections.lessons', 'instructor', 'quizzes']);
-        return view('admin.courses.show', compact('course'));
+
+        // Sertifika konfigürasyonu ve ön koşullar
+        $certConfig   = CertificateConfig::with('prerequisites')->where('course_id', $course->id)->first();
+        $allCourses   = Course::where('id', '!=', $course->id)->orderBy('title')->get(['id', 'title']);
+        $prereqIds    = $certConfig?->prerequisites->pluck('id')->toArray() ?? [];
+
+        // Ders bazlı video izleme istatistikleri
+        $lessonIds = $course->sections->flatMap(fn($s) => $s->lessons->pluck('id'))->toArray();
+        $watchStats = [];
+        if (!empty($lessonIds)) {
+            $rows = DB::table('progress')
+                ->whereIn('lesson_id', $lessonIds)
+                ->select('lesson_id',
+                    DB::raw('COUNT(DISTINCT user_id) as viewer_count'),
+                    DB::raw('SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) as completed_count'),
+                    DB::raw('AVG(watched_sec) as avg_watched_sec'))
+                ->groupBy('lesson_id')
+                ->get();
+            foreach ($rows as $row) {
+                $watchStats[$row->lesson_id] = $row;
+            }
+        }
+
+        return view('admin.courses.show', compact('course', 'certConfig', 'allCourses', 'prereqIds', 'watchStats'));
     }
 
     public function edit(Course $course)
@@ -91,20 +117,48 @@ class AdminCourseController extends Controller
     public function destroy(Course $course)
     {
         $course->delete();
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'redirect' => route('admin.courses.index')]);
+        }
         return redirect()->route('admin.courses.index')->with('success', 'Kurs silindi.');
+    }
+
+    // ── Sertifika Ön Koşulları ─────────────────────────────────────────
+    public function updateCertConfig(Request $request, Course $course)
+    {
+        $prereqs = array_filter((array) $request->input('prerequisites', []), 'is_numeric');
+
+        $config = CertificateConfig::firstOrCreate(
+            ['course_id' => $course->id],
+            ['cert_level' => 'OPERATOR', 'completion_days' => 30, 'validity_days' => 365,
+             'requires_quiz' => true, 'min_watch_pct' => 80]
+        );
+
+        $config->prerequisites()->sync($prereqs);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Ön koşullar kaydedildi.']);
+        }
+        return back()->with('success', 'Sertifika ön koşulları güncellendi.');
     }
 
     // ── Bölüm (Section) işlemleri ─────────────────────────────────────
     public function storeSection(Request $request, Course $course)
     {
         $data = $request->validate(['title' => 'required|string|max:255', 'order' => 'nullable|integer']);
-        $course->sections()->create(['title' => $data['title'], 'order' => $data['order'] ?? 0]);
+        $section = $course->sections()->create(['title' => $data['title'], 'order' => $data['order'] ?? 0]);
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'section' => $section->toArray(), 'message' => 'Bölüm eklendi.']);
+        }
         return back()->with('success', 'Bölüm eklendi.');
     }
 
     public function destroySection(Section $section)
     {
         $section->delete();
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Bölüm silindi.']);
+        }
         return back()->with('success', 'Bölüm silindi.');
     }
 
@@ -142,6 +196,9 @@ class AdminCourseController extends Controller
 
         $lesson->save();
 
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'lesson' => $lesson->toArray(), 'message' => 'Ders eklendi.']);
+        }
         return back()->with('success', 'Ders eklendi.');
     }
 
@@ -180,6 +237,9 @@ class AdminCourseController extends Controller
 
         $lesson->save();
 
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'lesson' => $lesson->fresh()->toArray(), 'message' => 'Ders güncellendi.']);
+        }
         return back()->with('success', 'Ders güncellendi.');
     }
 
@@ -189,6 +249,9 @@ class AdminCourseController extends Controller
             Storage::disk('public')->delete($lesson->video_path);
         }
         $lesson->delete();
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Ders silindi.']);
+        }
         return back()->with('success', 'Ders silindi.');
     }
 }

@@ -51,6 +51,9 @@ Route::middleware('auth')->group(function () {
     // Video ders tamamlama (AJAX POST)
     Route::post('/courses/{slug}/lessons/{lesson}/complete', [CourseController::class, 'completeLesson'])->name('courses.lesson.complete');
 
+    // Kısmi video ilerleme kaydet (AJAX POST)
+    Route::post('/courses/{slug}/lessons/{lesson}/progress', [CourseController::class, 'saveProgress'])->name('courses.lesson.progress');
+
     // Sınavlar
     Route::get('/quizzes/{quiz}/take',    [QuizController::class, 'take'])->name('quizzes.take');
     Route::post('/quizzes/{quiz}/submit', [QuizController::class, 'submit'])->name('quizzes.submit');
@@ -74,6 +77,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/courses/{course}/edit',[AdminCourseController::class, 'edit'])->name('courses.edit');
     Route::put('/courses/{course}',     [AdminCourseController::class, 'update'])->name('courses.update');
     Route::delete('/courses/{course}',  [AdminCourseController::class, 'destroy'])->name('courses.destroy');
+
+    // Sertifika ön koşulları
+    Route::post('/courses/{course}/cert-config', [AdminCourseController::class, 'updateCertConfig'])->name('courses.cert-config');
 
     // Bölüm işlemleri
     Route::post('/courses/{course}/sections',  [AdminCourseController::class, 'storeSection'])->name('sections.store');

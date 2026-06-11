@@ -65,9 +65,12 @@ class CourseController extends Controller
         return view('courses.show', compact('course', 'isEnrolled', 'progress', 'mandatoryCourses'));
     }
 
-    public function enroll(string $slug)
+    public function enroll(Request $request, string $slug)
     {
-        if (!Auth::check()) return redirect()->route('login');
+        if (!Auth::check()) {
+            if ($request->expectsJson()) return response()->json(['redirect' => route('login')], 401);
+            return redirect()->route('login');
+        }
 
         $course = Course::where('slug', $slug)->firstOrFail();
 
@@ -76,7 +79,13 @@ class CourseController extends Controller
             ['status' => 'ACTIVE']
         );
 
-        return redirect()->route('courses.learn', $slug);
+        $learnUrl = route('courses.learn', $slug);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'redirect' => $learnUrl]);
+        }
+
+        return redirect($learnUrl);
     }
 
     public function learn(string $slug)
@@ -113,6 +122,31 @@ class CourseController extends Controller
         $quizzes = Quiz::where('course_id', $course->id)->get();
 
         return view('courses.learn', compact('course', 'enrollment', 'completedIds', 'allVideosCompleted', 'quizzes'));
+    }
+
+    // POST /courses/{slug}/lessons/{lesson}/progress — AJAX (kısmi izleme kaydı)
+    public function saveProgress(Request $request, string $slug, Lesson $lesson)
+    {
+        if (!Auth::check()) return response()->json(['error' => 'Unauthorized'], 401);
+
+        $course   = Course::where('slug', $slug)->firstOrFail();
+        $enrolled = Enrollment::where('user_id', Auth::id())
+            ->where('course_id', $course->id)->exists();
+
+        if (!$enrolled) return response()->json(['error' => 'Not enrolled'], 403);
+
+        $watchedSec = max(0, (int) $request->input('watched_sec', 0));
+        $existing   = Progress::where('user_id', Auth::id())
+            ->where('lesson_id', $lesson->id)->first();
+
+        if (!$existing) {
+            Progress::create(['user_id' => Auth::id(), 'lesson_id' => $lesson->id,
+                              'completed' => false, 'watched_sec' => $watchedSec]);
+        } elseif (!$existing->completed && $watchedSec > ($existing->watched_sec ?? 0)) {
+            $existing->update(['watched_sec' => $watchedSec]);
+        }
+
+        return response()->json(['success' => true]);
     }
 
     // POST /courses/{slug}/lessons/{lesson}/complete — AJAX
