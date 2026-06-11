@@ -91,11 +91,23 @@
             placeholder="{{ __('ui.register_confirm_ph') }}" class="input-brut">
         </div>
         <div>
-          <label class="text-mono-sm mb-2 block">{{ __('ui.register_role') }}</label>
-          <select name="role" class="input-brut">
-            <option value="STUDENT" {{ old('role','STUDENT')==='STUDENT'?'selected':'' }}>{{ __('ui.register_role_student') }}</option>
-            <option value="INSTRUCTOR" {{ old('role')==='INSTRUCTOR'?'selected':'' }}>{{ __('ui.register_role_inst') }}</option>
-          </select>
+          <label class="text-mono-sm mb-2 block">KAYIT TÜRÜ</label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center gap-3 border-[3px] border-[#0A0A0A] p-4 cursor-pointer hover:bg-[#FFE000] transition-colors role-card {{ old('role','STUDENT')==='STUDENT'?'bg-[#FFE000]':'bg-white' }}" style="box-shadow:3px 3px 0 #0A0A0A">
+              <input type="radio" name="role" value="STUDENT" class="hidden role-radio" {{ old('role','STUDENT')==='STUDENT'?'checked':'' }}>
+              <div>
+                <p class="font-black text-xs uppercase tracking-tight">Öğrenci</p>
+                <p class="font-mono text-[9px] text-[#555] mt-0.5">Kurslara katıl</p>
+              </div>
+            </label>
+            <label class="flex items-center gap-3 border-[3px] border-[#0A0A0A] p-4 cursor-pointer hover:bg-[#FFE000] transition-colors role-card {{ old('role')==='OPERATOR'?'bg-[#FFE000]':'bg-white' }}" style="box-shadow:3px 3px 0 #0A0A0A">
+              <input type="radio" name="role" value="OPERATOR" class="hidden role-radio" {{ old('role')==='OPERATOR'?'checked':'' }}>
+              <div>
+                <p class="font-black text-xs uppercase tracking-tight">Operatör</p>
+                <p class="font-mono text-[9px] text-[#555] mt-0.5">Sertifika kazan</p>
+              </div>
+            </label>
+          </div>
         </div>
         <div class="flex items-start gap-2">
           <input type="checkbox" id="terms" name="terms" required class="mt-1 w-4 h-4 border-[2px] border-[#0A0A0A] shrink-0">
@@ -116,6 +128,19 @@
 </div>
 
 <script>
+// Rol kartı seçimi
+document.querySelectorAll('.role-card').forEach(function(card) {
+  card.addEventListener('click', function() {
+    document.querySelectorAll('.role-card').forEach(function(c) {
+      c.classList.remove('bg-[#FFE000]');
+      c.classList.add('bg-white');
+    });
+    this.classList.remove('bg-white');
+    this.classList.add('bg-[#FFE000]');
+    this.querySelector('.role-radio').checked = true;
+  });
+});
+
 function checkStrength(v) {
   const bar = document.getElementById('strengthBar');
   const txt = document.getElementById('strengthText');
