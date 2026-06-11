@@ -74,8 +74,7 @@ class AdminCertificateController extends Controller
             ? CertificateConfig::with('prerequisites')->where('course_id', $certificate->course_id)->first()
             : null;
         $prereqIds  = $certConfig?->prerequisites->pluck('id')->toArray() ?? [];
-        $allCourses = Course::where('published', true)
-            ->when($certificate->course_id, fn($q) => $q->where('id', '!=', $certificate->course_id))
+        $allCourses = Course::when($certificate->course_id, fn($q) => $q->where('id', '!=', $certificate->course_id))
             ->orderBy('title')->get(['id', 'title']);
 
         return view('admin.certificates.show', compact('certificate', 'certConfig', 'prereqIds', 'allCourses'));
@@ -84,7 +83,7 @@ class AdminCertificateController extends Controller
     public function updatePrerequisites(Request $request, Certificate $certificate)
     {
         if (!$certificate->course_id) {
-            return response()->json(['success' => false, 'message' => 'Bu sertifikaya kurs atanmamış.'], 422);
+            return response()->json(['success' => false, 'message' => 'Bu sertifikaya kurs atanmamış. Önce kursu düzenleyin.'], 422);
         }
 
         $prereqs = array_filter((array) $request->input('prerequisites', []), 'is_numeric');

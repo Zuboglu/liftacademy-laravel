@@ -149,20 +149,26 @@
   </div>
 
   {{-- Sertifika Ön Koşulları --}}
-  @if($certificate->course_id)
   <div class="border-[3px] border-[#0A0A0A] bg-white p-5 mb-6" style="box-shadow:4px 4px 0 #0A0A0A" id="prereq-panel">
     <div class="flex items-center justify-between mb-1">
       <p class="font-mono text-[9px] text-[#888] uppercase tracking-widest">BU SERTİFİKA İÇİN TAMAMLANMASI GEREKEN KURSLAR</p>
       <span class="font-mono text-[9px] text-[#888]">{{ count($prereqIds) > 0 ? count($prereqIds).' kurs seçili' : 'Seçili kurs yok' }}</span>
     </div>
-    <p class="text-[10px] text-[#888] mb-4">Bu sertifikayı alabilmek için önce aşağıdaki kurslar tamamlanmış olmalıdır (videolar izlenip sınavlar geçilmeli).</p>
+    <p class="text-[10px] text-[#888] mb-4">Bu sertifikayı alabilmek için önce tamamlanması gereken kursları seçin.</p>
+
+    @if(!$certificate->course_id)
+    <div class="bg-[#FFF3CD] border border-[#FFE000] p-3 mb-3 text-xs font-bold text-[#856404]">
+      ⚠ Bu sertifikaya kurs atanmamış. Ön koşul eklemek için önce sertifikayı düzenleyip bir kurs seçin.
+    </div>
+    @endif
+
     <form id="prereq-form" action="{{ route('admin.certificates.prerequisites', $certificate->id) }}" method="POST">
       @csrf
       <div class="space-y-1 max-h-56 overflow-y-auto mb-4 border border-[#e0e0e0] p-2 bg-[#fafaf5]">
         @forelse($allCourses as $c)
-        <label class="flex items-center gap-2 cursor-pointer py-1.5 hover:bg-white px-2 rounded">
+        <label class="flex items-center gap-2 cursor-pointer py-1.5 hover:bg-white px-2">
           <input type="checkbox" name="prerequisites[]" value="{{ $c->id }}"
-            class="w-3.5 h-3.5 shrink-0 accent-[#0A0A0A]"
+            class="w-3.5 h-3.5 shrink-0"
             {{ in_array($c->id, $prereqIds) ? 'checked' : '' }}>
           <span class="text-xs font-medium text-[#0A0A0A] leading-tight">{{ $c->title }}</span>
           @if(in_array($c->id, $prereqIds))
@@ -170,20 +176,20 @@
           @endif
         </label>
         @empty
-        <p class="text-xs text-[#888] p-2">Başka yayınlanan kurs yok.</p>
+        <p class="text-xs text-[#888] p-2">Henüz kurs yok.</p>
         @endforelse
       </div>
       <div class="flex items-center gap-3">
         <button type="submit" id="prereq-save-btn"
-          class="bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-5 py-2.5 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors"
+          {{ !$certificate->course_id ? 'disabled' : '' }}
+          class="bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-5 py-2.5 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           style="box-shadow:3px 3px 0 #0A0A0A">Kaydet</button>
         @if(count($prereqIds) > 0)
-        <p class="text-xs text-[#888]">Mevcut: {{ $allCourses->whereIn('id', $prereqIds)->pluck('title')->implode(', ') }}</p>
+        <p class="text-xs text-[#888]">Seçili: {{ $allCourses->whereIn('id', $prereqIds)->pluck('title')->implode(', ') }}</p>
         @endif
       </div>
     </form>
   </div>
-  @endif
 
   {{-- Meta bilgiler --}}
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
