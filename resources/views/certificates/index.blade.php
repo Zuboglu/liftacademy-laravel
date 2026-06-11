@@ -29,7 +29,12 @@
           <p class="text-mono-sm text-[#888] mt-1">{{ $cert->cert_number }}</p>
           <p class="text-xs font-medium text-[#888] mt-1">{{ $cert->created_at->format('d.m.Y') }}</p>
         </div>
-        <span class="tag-lime">{{ __('ui.cert_active') }}</span>
+        <div class="flex items-center gap-3 shrink-0">
+          <span class="tag-lime">{{ __('ui.cert_active') }}</span>
+          <a href="{{ route('certificates.show', $cert->id) }}"
+             class="bg-[#0A0A0A] text-[#FFE000] font-black text-xs uppercase tracking-widest px-4 py-2 border-[3px] border-[#0A0A0A] hover:bg-[#FFE000] hover:text-[#0A0A0A] transition-colors"
+             style="box-shadow:3px 3px 0 #FFE000">🖨 Yazdır</a>
+        </div>
       </div>
     </div>
     @empty

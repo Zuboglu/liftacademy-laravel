@@ -60,8 +60,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/quiz-results/{attempt}', [QuizController::class, 'result'])->name('quizzes.result');
 
     // Sertifikalar
-    Route::get('/certificates',      fn() => view('certificates.index'))->name('certificates.index');
-    Route::get('/certificates/{id}', fn() => view('certificates.show'))->name('certificates.show');
+    Route::get('/certificates', fn() => view('certificates.index'))->name('certificates.index');
+    Route::get('/certificates/{id}', function ($id) {
+        $cert = \App\Models\Certificate::with(['user', 'course'])->findOrFail($id);
+        abort_if($cert->user_id !== auth()->id(), 403);
+        return view('certificates.show', compact('cert'));
+    })->name('certificates.show');
 });
 
 // ── Admin ────────────────────────────────────────────────────────────────

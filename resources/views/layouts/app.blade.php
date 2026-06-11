@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'LiftAcademy')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('head')
     <style>
       /* Geniş ekran: kancalar tam görünür, içeriklerin önünde */
       #hook-left, #hook-right { transition: opacity .3s; }
