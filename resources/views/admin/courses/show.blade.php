@@ -231,29 +231,6 @@
           style="box-shadow:3px 3px 0 #0A0A0A">+ Sınav Ekle</a>
       </div>
 
-      {{-- Sertifika Ön Koşulları --}}
-      <div class="border-[3px] border-[#0A0A0A] bg-white p-5" style="box-shadow:4px 4px 0 #0A0A0A">
-        <p class="font-mono text-[9px] text-[#888] uppercase tracking-widest mb-1">SERTİFİKA ÖN KOŞULLARI</p>
-        <p class="text-[10px] text-[#888] mb-3">Bu kursun sertifikası için hangi kursların sınavları geçilmeli?</p>
-        <form id="prereq-form" action="{{ route('admin.courses.cert-config', $course->id) }}" method="POST">
-          @csrf
-          <div class="space-y-1 max-h-48 overflow-y-auto mb-3 border border-[#e0e0e0] p-2">
-            @forelse($allCourses as $c)
-            <label class="flex items-center gap-2 cursor-pointer py-1 hover:bg-[#fafaf5] px-1">
-              <input type="checkbox" name="prerequisites[]" value="{{ $c->id }}"
-                class="w-3.5 h-3.5 shrink-0"
-                {{ in_array($c->id, $prereqIds) ? 'checked' : '' }}>
-              <span class="text-xs font-medium text-[#0A0A0A] leading-tight">{{ $c->title }}</span>
-            </label>
-            @empty
-            <p class="text-xs text-[#888]">Başka kurs yok.</p>
-            @endforelse
-          </div>
-          <button type="submit" id="prereq-save-btn"
-            class="bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-4 py-2 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors w-full"
-            style="box-shadow:3px 3px 0 #0A0A0A">Kaydet</button>
-        </form>
-      </div>
     </div>
 
   </div>
@@ -493,22 +470,6 @@ function appendSection(section) {
     container.insertAdjacentHTML('beforeend', html);
 }
 
-/* ── CERT PREREQUISITES ─────────────────────────────────────── */
-const prereqForm = document.getElementById('prereq-form');
-if (prereqForm) {
-    prereqForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const btn = document.getElementById('prereq-save-btn');
-        btnState(btn, true);
-        try {
-            const res  = await xfetch(this.action, 'POST', new FormData(this));
-            const data = await res.json();
-            if (data.success) toast(data.message);
-            else toast(data.message || 'Hata.', false);
-        } catch { toast('Bağlantı hatası.', false); }
-        btnState(btn, false);
-    });
-}
 
 })();
 </script>

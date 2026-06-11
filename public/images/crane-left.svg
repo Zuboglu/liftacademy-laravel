@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 920" width="500" height="920">
+  <!-- LiftAcademy crane-left v3: mast sol kenara yapışık, altın sarı, uzun boom sağa, Avrupa kancası -->
+  <g stroke="#D4A017" stroke-linecap="round" stroke-linejoin="round" fill="none">
+
+    <!-- ═══ KULE GÖVDESİ (MAST) ═══ -->
+    <line x1="20" y1="306" x2="20" y2="920" stroke-width="5.5"/>
+    <line x1="72" y1="306" x2="72" y2="920" stroke-width="5.5"/>
+    <!-- Yatay traversler (her 75px) -->
+    <line x1="20" y1="306" x2="72" y2="306" stroke-width="3.5"/>
+    <line x1="20" y1="381" x2="72" y2="381" stroke-width="3"/>
+    <line x1="20" y1="456" x2="72" y2="456" stroke-width="3"/>
+    <line x1="20" y1="531" x2="72" y2="531" stroke-width="3"/>
+    <line x1="20" y1="606" x2="72" y2="606" stroke-width="3"/>
+    <line x1="20" y1="681" x2="72" y2="681" stroke-width="3"/>
+    <line x1="20" y1="756" x2="72" y2="756" stroke-width="3"/>
+    <line x1="20" y1="831" x2="72" y2="831" stroke-width="3"/>
+    <!-- Çift X-kafes diyagonaller (8 panel) -->
+    <line x1="20" y1="306" x2="72" y2="381" stroke-width="2.5"/>
+    <line x1="72" y1="306" x2="20" y2="381" stroke-width="2.5"/>
+    <line x1="20" y1="381" x2="72" y2="456" stroke-width="2.5"/>
+    <line x1="72" y1="381" x2="20" y2="456" stroke-width="2.5"/>
+    <line x1="20" y1="456" x2="72" y2="531" stroke-width="2.5"/>
+    <line x1="72" y1="456" x2="20" y2="531" stroke-width="2.5"/>
+    <line x1="20" y1="531" x2="72" y2="606" stroke-width="2.5"/>
+    <line x1="72" y1="531" x2="20" y2="606" stroke-width="2.5"/>
+    <line x1="20" y1="606" x2="72" y2="681" stroke-width="2.5"/>
+    <line x1="72" y1="606" x2="20" y2="681" stroke-width="2.5"/>
+    <line x1="20" y1="681" x2="72" y2="756" stroke-width="2.5"/>
+    <line x1="72" y1="681" x2="20" y2="756" stroke-width="2.5"/>
+    <line x1="20" y1="756" x2="72" y2="831" stroke-width="2.5"/>
+    <line x1="72" y1="756" x2="20" y2="831" stroke-width="2.5"/>
+    <line x1="20" y1="831" x2="72" y2="920" stroke-width="2.5"/>
+    <line x1="72" y1="831" x2="20" y2="920" stroke-width="2.5"/>
+
+    <!-- ═══ SLEWING RING (DÖNME HALKASI) ═══ -->
+    <rect x="5" y="288" width="92" height="18" rx="3" stroke-width="4"/>
+    <line x1="12" y1="288" x2="88" y2="288" stroke-width="2"/>
+    <line x1="5"  y1="298" x2="97" y2="298" stroke-width="1.5"/>
+
+    <!-- ═══ A-FRAME / CAT-HEAD (GERGİ DİREĞİ) ═══ -->
+    <line x1="20" y1="292" x2="46" y2="68" stroke-width="5"/>
+    <line x1="72" y1="292" x2="46" y2="68" stroke-width="5"/>
+    <!-- Yatay takviyeler -->
+    <line x1="27" y1="204" x2="65" y2="204" stroke-width="3"/>
+    <line x1="31" y1="158" x2="61" y2="158" stroke-width="2.5"/>
+    <!-- Tepe makarası muhafazası -->
+    <rect x="38" y="62" width="16" height="9" rx="2" stroke-width="3.5"/>
+    <circle cx="46" cy="60" r="5.5" stroke-width="2.5"/>
+    <line x1="46" y1="54" x2="46" y2="62" stroke-width="3"/>
+    <!-- Makara halat çıkış kılavuzları -->
+    <line x1="40" y1="71" x2="37" y2="78" stroke-width="2.5"/>
+    <line x1="52" y1="71" x2="55" y2="78" stroke-width="2.5"/>
+
+    <!-- ═══ KARŞI KOL (COUNTER-JIB — büyük ölçüde off-screen) ═══ -->
+    <line x1="20" y1="282" x2="-12" y2="292" stroke-width="4"/>
+    <line x1="20" y1="297" x2="-12" y2="307" stroke-width="4"/>
+    <line x1="-12" y1="292" x2="-12" y2="307" stroke-width="3.5"/>
+    <!-- Backstay halatı apex'ten karşı kola -->
+    <line x1="46" y1="74" x2="-12" y2="299" stroke-width="2"/>
+    <!-- Karşı ağırlık blokları (tamamen off-screen) -->
+    <rect x="-28" y="305" width="28" height="22" rx="2" stroke-width="4"/>
+    <rect x="-24" y="327" width="20" height="14" rx="1" stroke-width="3"/>
+
+    <!-- ═══ ANA KOL / BOOM (sağa, x=72→490) ═══ -->
+    <!-- Üst chord (hafif yukarı eğim) -->
+    <polyline points="72,276 122,272 172,269 230,266 290,263 350,260 410,257 490,253" stroke-width="4.5"/>
+    <!-- Alt chord -->
+    <polyline points="72,292 122,288 172,285 230,282 290,279 350,276 410,273 490,269" stroke-width="4.5"/>
+    <!-- Uç kapama plakası -->
+    <line x1="490" y1="253" x2="490" y2="269" stroke-width="4.5"/>
+    <!-- Dikey traversler (boom panelleri) -->
+    <line x1="122" y1="272" x2="122" y2="288" stroke-width="2.5"/>
+    <line x1="172" y1="269" x2="172" y2="285" stroke-width="2.5"/>
+    <line x1="230" y1="266" x2="230" y2="282" stroke-width="2.5"/>
+    <line x1="290" y1="263" x2="290" y2="279" stroke-width="2.5"/>
+    <line x1="350" y1="260" x2="350" y2="276" stroke-width="2.5"/>
+    <line x1="410" y1="257" x2="410" y2="273" stroke-width="2.5"/>
+    <!-- Warren alternating diyagonaller (gerçekçi kafes boom) -->
+    <line x1="72"  y1="292" x2="122" y2="272" stroke-width="2"/>
+    <line x1="122" y1="288" x2="172" y2="269" stroke-width="2"/>
+    <line x1="172" y1="285" x2="230" y2="266" stroke-width="2"/>
+    <line x1="230" y1="282" x2="290" y2="263" stroke-width="2"/>
+    <line x1="290" y1="279" x2="350" y2="260" stroke-width="2"/>
+    <line x1="350" y1="276" x2="410" y2="257" stroke-width="2"/>
+    <line x1="410" y1="273" x2="490" y2="253" stroke-width="2"/>
+    <line x1="122" y1="272" x2="172" y2="285" stroke-width="2"/>
+    <line x1="172" y1="269" x2="230" y2="282" stroke-width="2"/>
+    <line x1="230" y1="266" x2="290" y2="279" stroke-width="2"/>
+    <line x1="290" y1="263" x2="350" y2="276" stroke-width="2"/>
+    <line x1="350" y1="260" x2="410" y2="273" stroke-width="2"/>
+    <line x1="410" y1="257" x2="490" y2="269" stroke-width="2"/>
+
+    <!-- ═══ BACKSTAY HALATLAR (A-frame → boom) ═══ -->
+    <line x1="46" y1="68" x2="290" y2="271" stroke-width="2"/>
+    <line x1="46" y1="68" x2="490" y2="261" stroke-width="2.2"/>
+
+    <!-- ═══ OPERATÖR KABİNİ ═══ -->
+    <rect x="72" y="292" width="32" height="26" rx="2" stroke-width="2.5"/>
+    <!-- Sol pencere -->
+    <rect x="76" y="296" width="11" height="10" rx="1" stroke-width="2"/>
+    <!-- Kapı -->
+    <rect x="90" y="300" width="10" height="18" rx="1" stroke-width="1.8"/>
+    <!-- Orta yatay çizgi (çerçeve) -->
+    <line x1="72" y1="306" x2="104" y2="306" stroke-width="1.5"/>
+
+    <!-- ═══ TROLLEY (TAŞIYICI) ═══ -->
+    <rect x="396" y="270" width="22" height="11" rx="1.5" stroke-width="2.5"/>
+    <!-- Üst tekerlek yuvaları -->
+    <circle cx="401" cy="269" r="3.5" stroke-width="2"/>
+    <circle cx="413" cy="269" r="3.5" stroke-width="2"/>
+    <!-- Trolley → üst kanca bloğu bağlantısı -->
+    <line x1="407" y1="281" x2="407" y2="300" stroke-width="2.5"/>
+
+    <!-- ═══ ÜST KANCA BLOĞU (palan makarası) ═══ -->
+    <rect x="400" y="300" width="14" height="11" rx="1.5" stroke-width="2.5"/>
+    <circle cx="407" cy="305" r="4" stroke-width="1.5"/>
+
+    <!-- ═══ ÇEKME HALATLARI (çift sarım, 4-fall reeving) ═══ -->
+    <line x1="403" y1="311" x2="400" y2="428" stroke-width="2"/>
+    <line x1="407" y1="311" x2="407" y2="428" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <line x1="411" y1="311" x2="414" y2="428" stroke-width="2"/>
+
+    <!-- ═══ ALT KANCA BLOĞU — Avrupa tipi trapezoidal ═══ -->
+    <!-- Üst makara muhafaza gövdesi -->
+    <rect x="393" y="428" width="28" height="22" rx="5" stroke-width="3"/>
+    <!-- İki makara dairesi (Avrupa tipi: yan yana) -->
+    <circle cx="400" cy="438" r="7" stroke-width="2"/>
+    <circle cx="413" cy="438" r="7" stroke-width="2"/>
+    <!-- Orta bölücü -->
+    <line x1="407" y1="428" x2="407" y2="450" stroke-width="1.5"/>
+    <!-- Alt trapez gövde -->
+    <path d="M395,450 L419,450 L416,468 L398,468 Z" stroke-width="3"/>
+    <!-- Trapez içi yatay takviye -->
+    <line x1="396" y1="459" x2="418" y2="459" stroke-width="1.5"/>
+    <!-- Alt clevis pimi / dönme bağlantısı -->
+    <line x1="407" y1="468" x2="407" y2="480" stroke-width="3"/>
+    <ellipse cx="407" cy="481" rx="6" ry="5" stroke-width="2.5"/>
+
+    <!-- ═══ KANCA (Avrupa tipi, J şekli, kalın) ═══ -->
+    <!-- Düz kısım (kanca sapı) -->
+    <line x1="407" y1="486" x2="407" y2="510" stroke-width="5"/>
+    <!-- Büyük J eğrisi (yük taşıyan yay) -->
+    <path d="M407,510 C407,540 407,558 390,558 C374,558 364,543 364,530 C364,517 374,508 390,508"
+          stroke-width="5.5" stroke-linecap="round"/>
+    <!-- Güvenlik mandalı (hook latch) -->
+    <path d="M390,508 C396,503 404,499 407,499" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Kanca arka takviye nervürü -->
+    <path d="M409,488 C412,498 412,508 409,516" stroke-width="2" stroke-linecap="round" stroke-dasharray="3,3"/>
+    <!-- Kanca ağız baskı nervürü -->
+    <path d="M364,530 C364,540 369,548 376,551" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- ═══ HOIST DRUM (VİNÇ TAMBURÜ — sol kenarda, yarı görünür) ═══ -->
+    <ellipse cx="10" cy="295" rx="9" ry="6" stroke-width="2.5"/>
+    <line x1="1"  y1="295" x2="1"  y2="306" stroke-width="2"/>
+    <line x1="19" y1="295" x2="19" y2="306" stroke-width="2"/>
+    <line x1="1"  y1="306" x2="19" y2="306" stroke-width="2"/>
+    <!-- Tambur aks çizgisi -->
+    <line x1="4"  y1="295" x2="16" y2="295" stroke-width="1.5" stroke-dasharray="2,2"/>
+
+  </g>
+</svg>

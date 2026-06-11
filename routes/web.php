@@ -82,9 +82,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/courses/{course}',     [AdminCourseController::class, 'update'])->name('courses.update');
     Route::delete('/courses/{course}',  [AdminCourseController::class, 'destroy'])->name('courses.destroy');
 
-    // Sertifika ön koşulları
-    Route::post('/courses/{course}/cert-config', [AdminCourseController::class, 'updateCertConfig'])->name('courses.cert-config');
-
     // Bölüm işlemleri
     Route::post('/courses/{course}/sections',  [AdminCourseController::class, 'storeSection'])->name('sections.store');
     Route::delete('/sections/{section}',        [AdminCourseController::class, 'destroySection'])->name('sections.destroy');
@@ -110,13 +107,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::delete('/questions/{question}',       [AdminQuizController::class, 'destroyQuestion'])->name('questions.destroy');
 
     // Sertifika CRUD
-    Route::get('/certificates',                       [AdminCertificateController::class, 'index'])->name('certificates.index');
-    Route::get('/certificates/create',                [AdminCertificateController::class, 'create'])->name('certificates.create');
-    Route::post('/certificates',                      [AdminCertificateController::class, 'store'])->name('certificates.store');
-    Route::get('/certificates/{certificate}',         [AdminCertificateController::class, 'show'])->name('certificates.show');
-    Route::get('/certificates/{certificate}/edit',    [AdminCertificateController::class, 'edit'])->name('certificates.edit');
-    Route::put('/certificates/{certificate}',         [AdminCertificateController::class, 'update'])->name('certificates.update');
-    Route::delete('/certificates/{certificate}',      [AdminCertificateController::class, 'destroy'])->name('certificates.destroy');
+    Route::get('/certificates',                               [AdminCertificateController::class, 'index'])->name('certificates.index');
+    Route::get('/certificates/create',                        [AdminCertificateController::class, 'create'])->name('certificates.create');
+    Route::post('/certificates',                              [AdminCertificateController::class, 'store'])->name('certificates.store');
+    Route::get('/certificates/{certificate}',                 [AdminCertificateController::class, 'show'])->name('certificates.show');
+    Route::get('/certificates/{certificate}/edit',            [AdminCertificateController::class, 'edit'])->name('certificates.edit');
+    Route::put('/certificates/{certificate}',                 [AdminCertificateController::class, 'update'])->name('certificates.update');
+    Route::delete('/certificates/{certificate}',              [AdminCertificateController::class, 'destroy'])->name('certificates.destroy');
+    Route::post('/certificates/{certificate}/prerequisites',  [AdminCertificateController::class, 'updatePrerequisites'])->name('certificates.prerequisites');
 
     // Kullanıcı yönetimi
     Route::get('/users',                    [AdminUserController::class, 'index'])->name('users.index');

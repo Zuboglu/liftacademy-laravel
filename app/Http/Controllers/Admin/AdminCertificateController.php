@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Certificate;
+use App\Models\CertificateConfig;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -68,7 +69,38 @@ class AdminCertificateController extends Controller
     public function show(Certificate $certificate)
     {
         $certificate->load(['user', 'course']);
-        return view('admin.certificates.show', compact('certificate'));
+
+        $certConfig = $certificate->course_id
+            ? CertificateConfig::with('prerequisites')->where('course_id', $certificate->course_id)->first()
+            : null;
+        $prereqIds  = $certConfig?->prerequisites->pluck('id')->toArray() ?? [];
+        $allCourses = Course::where('published', true)
+            ->when($certificate->course_id, fn($q) => $q->where('id', '!=', $certificate->course_id))
+            ->orderBy('title')->get(['id', 'title']);
+
+        return view('admin.certificates.show', compact('certificate', 'certConfig', 'prereqIds', 'allCourses'));
+    }
+
+    public function updatePrerequisites(Request $request, Certificate $certificate)
+    {
+        if (!$certificate->course_id) {
+            return response()->json(['success' => false, 'message' => 'Bu sertifikaya kurs atanmamış.'], 422);
+        }
+
+        $prereqs = array_filter((array) $request->input('prerequisites', []), 'is_numeric');
+
+        $config = CertificateConfig::firstOrCreate(
+            ['course_id' => $certificate->course_id],
+            ['cert_level' => $certificate->level, 'completion_days' => 30,
+             'validity_days' => 365, 'requires_quiz' => true, 'min_watch_pct' => 80]
+        );
+
+        $config->prerequisites()->sync($prereqs);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Ön koşullar kaydedildi.']);
+        }
+        return back()->with('success', 'Sertifika ön koşulları güncellendi.');
     }
 
     public function edit(Certificate $certificate)

@@ -7,30 +7,13 @@ use Illuminate\Support\Facades\Http;
 
 class ChatController extends Controller
 {
-    private string $systemPrompt = <<<'PROMPT'
-Sen LiftAcademy'nin yapay zeka asistanısın. LiftAcademy, vinç operatörlerini yetiştiren bir kurumsal LMS (öğrenme yönetim sistemi) platformudur.
-
-Görevin:
-- Kullanıcıların kurslar, sınavlar, sertifikalar ve platform kullanımı hakkındaki sorularını yanıtlamak
-- Vinç operatörü eğitimi, İSG (iş sağlığı ve güvenliği), vinç tipleri ve güvenli operasyon hakkında bilgi vermek
-- Kayıt, giriş ve platform gezintisi konularında yardımcı olmak
-- Kısa, net ve yardımcı cevaplar vermek (maks. 3-4 cümle)
-- Türkçe, İngilizce veya kullanıcının yazdığı dilde yanıt vermek
-
-Platform özellikleri:
-- HD video dersler, çoktan seçmeli sınavlar, otomatik sertifikasyon
-- 5 kademeli sertifikasyon: Junior Operatör → Operatör → Senior Operatör → Supervisor → Trainer
-- Kurslar: İSG & Güvenlik, Vinç Türleri, Operasyon, Teknik, Risk Yönetimi, Sertifikasyon
-- Sınav geçme notu: %70-90
-
-Platforma özel olmayan sorular için nazikçe konuyu platforma yönlendir.
-PROMPT;
+    private string $systemPrompt = 'Sen LiftAcademy asistanısın. Vinç operatörü LMS platformu: video dersler, sınavlar (%70+ geçme), 5 kademeli sertifikasyon. Kısa ve net yanıt ver (max 2-3 cümle). Kullanıcının dilinde yaz.';
 
     public function send(Request $request)
     {
         $request->validate([
-            'message'  => 'required|string|max:500',
-            'history'  => 'array|max:20',
+            'message'  => 'required|string|max:300',
+            'history'  => 'array|max:6',
         ]);
 
         $apiKey = config('services.deepseek.key');
@@ -48,7 +31,7 @@ PROMPT;
             if (isset($h['role'], $h['content'])) {
                 $messages[] = [
                     'role'    => in_array($h['role'], ['user', 'assistant']) ? $h['role'] : 'user',
-                    'content' => substr($h['content'], 0, 1000),
+                    'content' => substr($h['content'], 0, 500),
                 ];
             }
         }
@@ -61,8 +44,8 @@ PROMPT;
         ])->timeout(30)->post('https://api.deepseek.com/v1/chat/completions', [
             'model'       => 'deepseek-chat',
             'messages'    => $messages,
-            'max_tokens'  => 300,
-            'temperature' => 0.7,
+            'max_tokens'  => 150,
+            'temperature' => 0.5,
         ]);
 
         if ($response->failed()) {

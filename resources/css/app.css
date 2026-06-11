@@ -10,6 +10,7 @@ html { font-family: 'Space Grotesk','Inter',system-ui,sans-serif; -webkit-font-s
 body { background:#F5F0E8; min-height:100vh; }
 h1,h2,h3,h4 { font-family:'Inter',sans-serif; font-weight:900; letter-spacing:-0.04em; }
 ::selection { background:#FFE000; color:#0A0A0A; }
+input::selection, textarea::selection { background:#0A0A0A; color:#FFE000; }
 
 .btn-brut { display:inline-flex;align-items:center;gap:0.5rem;font-weight:700;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.08em;padding:0.75rem 1.5rem;background:#FFE000;color:#0A0A0A;border:3px solid #0A0A0A;box-shadow:4px 4px 0 #0A0A0A;transition:all 0.1s;cursor:pointer;text-decoration:none; }
 .btn-brut:hover { transform:translate(-2px,-2px);box-shadow:6px 6px 0 #0A0A0A; }

@@ -92,13 +92,23 @@ class AdminQuizController extends Controller
     public function destroy(Quiz $quiz)
     {
         $quiz->delete();
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'redirect' => route('admin.quizzes.index')]);
+        }
         return redirect()->route('admin.quizzes.index')->with('success', 'Sınav silindi.');
     }
 
-    // POST /admin/quizzes/{quiz}/toggle-active — AJAX veya form
     public function toggleActive(Quiz $quiz)
     {
         $quiz->update(['is_active' => !$quiz->is_active]);
+        $quiz->refresh();
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success'   => true,
+                'is_active' => $quiz->is_active,
+                'message'   => $quiz->is_active ? 'Sınav aktif edildi.' : 'Sınav pasif edildi.',
+            ]);
+        }
         return back()->with('success', $quiz->is_active ? 'Sınav aktif edildi.' : 'Sınav pasif edildi.');
     }
 
@@ -115,7 +125,7 @@ class AdminQuizController extends Controller
 
         $options = array_values(array_filter($data['options'], fn($o) => trim($o) !== ''));
 
-        QuizQuestion::create([
+        $question = QuizQuestion::create([
             'quiz_id'        => $quiz->id,
             'question'       => $data['question'],
             'options'        => $options,
@@ -124,6 +134,9 @@ class AdminQuizController extends Controller
             'order'          => $quiz->questions()->count(),
         ]);
 
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'question' => $question->toArray(), 'message' => 'Soru eklendi.']);
+        }
         return back()->with('success', 'Soru eklendi.');
     }
 
@@ -146,12 +159,18 @@ class AdminQuizController extends Controller
             'explanation'    => $data['explanation'] ?? null,
         ]);
 
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'question' => $question->fresh()->toArray(), 'message' => 'Soru güncellendi.']);
+        }
         return back()->with('success', 'Soru güncellendi.');
     }
 
     public function destroyQuestion(QuizQuestion $question)
     {
         $question->delete();
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Soru silindi.']);
+        }
         return back()->with('success', 'Soru silindi.');
     }
 }

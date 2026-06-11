@@ -50,10 +50,6 @@
   </div>
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <label class="text-mono-sm mb-1.5 block">FİYAT (₺)</label>
-      <input type="number" name="price" value="{{ $v('price') ?? 0 }}" min="0" step="0.01" class="input-brut" placeholder="0">
-    </div>
-    <div>
       <label class="text-mono-sm mb-1.5 block">GEÇER NOT (%)</label>
       <input type="number" name="passing_score" value="{{ $v('passing_score') ?? 70 }}" min="0" max="100" class="input-brut">
     </div>

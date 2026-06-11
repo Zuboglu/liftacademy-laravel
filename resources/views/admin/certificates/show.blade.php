@@ -148,6 +148,43 @@
     </div>
   </div>
 
+  {{-- Sertifika Ön Koşulları --}}
+  @if($certificate->course_id)
+  <div class="border-[3px] border-[#0A0A0A] bg-white p-5 mb-6" style="box-shadow:4px 4px 0 #0A0A0A" id="prereq-panel">
+    <div class="flex items-center justify-between mb-1">
+      <p class="font-mono text-[9px] text-[#888] uppercase tracking-widest">BU SERTİFİKA İÇİN TAMAMLANMASI GEREKEN KURSLAR</p>
+      <span class="font-mono text-[9px] text-[#888]">{{ count($prereqIds) > 0 ? count($prereqIds).' kurs seçili' : 'Seçili kurs yok' }}</span>
+    </div>
+    <p class="text-[10px] text-[#888] mb-4">Bu sertifikayı alabilmek için önce aşağıdaki kurslar tamamlanmış olmalıdır (videolar izlenip sınavlar geçilmeli).</p>
+    <form id="prereq-form" action="{{ route('admin.certificates.prerequisites', $certificate->id) }}" method="POST">
+      @csrf
+      <div class="space-y-1 max-h-56 overflow-y-auto mb-4 border border-[#e0e0e0] p-2 bg-[#fafaf5]">
+        @forelse($allCourses as $c)
+        <label class="flex items-center gap-2 cursor-pointer py-1.5 hover:bg-white px-2 rounded">
+          <input type="checkbox" name="prerequisites[]" value="{{ $c->id }}"
+            class="w-3.5 h-3.5 shrink-0 accent-[#0A0A0A]"
+            {{ in_array($c->id, $prereqIds) ? 'checked' : '' }}>
+          <span class="text-xs font-medium text-[#0A0A0A] leading-tight">{{ $c->title }}</span>
+          @if(in_array($c->id, $prereqIds))
+          <span class="ml-auto tag-lime text-[8px] shrink-0">SEÇİLİ</span>
+          @endif
+        </label>
+        @empty
+        <p class="text-xs text-[#888] p-2">Başka yayınlanan kurs yok.</p>
+        @endforelse
+      </div>
+      <div class="flex items-center gap-3">
+        <button type="submit" id="prereq-save-btn"
+          class="bg-[#FFE000] text-[#0A0A0A] font-black text-xs uppercase tracking-widest px-5 py-2.5 border-[3px] border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#FFE000] transition-colors"
+          style="box-shadow:3px 3px 0 #0A0A0A">Kaydet</button>
+        @if(count($prereqIds) > 0)
+        <p class="text-xs text-[#888]">Mevcut: {{ $allCourses->whereIn('id', $prereqIds)->pluck('title')->implode(', ') }}</p>
+        @endif
+      </div>
+    </form>
+  </div>
+  @endif
+
   {{-- Meta bilgiler --}}
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="border-[3px] border-[#0A0A0A] bg-white p-5" style="box-shadow:4px 4px 0 #0A0A0A">
@@ -211,4 +248,48 @@
   #cert-visual { margin:0; }
 }
 </style>
+
+@push('scripts')
+<script>
+(function(){
+const CSRF = document.querySelector('meta[name="csrf-token"]').content;
+
+function toast(msg, ok) {
+    let t = document.getElementById('prereq-toast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'prereq-toast';
+        t.style = 'position:fixed;top:16px;right:16px;z-index:9999;padding:12px 20px;font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;border:3px solid;transition:opacity .3s';
+        document.body.appendChild(t);
+    }
+    t.textContent = (ok !== false ? '✓ ' : '✗ ') + msg;
+    t.style.background  = ok !== false ? '#CCFF00' : '#FF2D2D';
+    t.style.color       = ok !== false ? '#0A0A0A' : '#fff';
+    t.style.borderColor = ok !== false ? '#0A0A0A' : '#FF2D2D';
+    t.style.opacity     = '1';
+    setTimeout(() => t.style.opacity = '0', 2500);
+}
+
+const prereqForm = document.getElementById('prereq-form');
+if (prereqForm) {
+    prereqForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('prereq-save-btn');
+        btn.disabled = true; btn._txt = btn.textContent; btn.textContent = '...';
+        try {
+            const res  = await fetch(this.action, {
+                method: 'POST',
+                headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': CSRF },
+                body: new FormData(this)
+            });
+            const data = await res.json();
+            if (data.success) toast(data.message);
+            else toast(data.message || 'Hata.', false);
+        } catch { toast('Bağlantı hatası.', false); }
+        btn.disabled = false; btn.textContent = btn._txt;
+    });
+}
+})();
+</script>
+@endpush
 @endsection

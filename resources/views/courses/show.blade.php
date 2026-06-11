@@ -121,15 +121,16 @@
             </div>
           </div>
           @else
-          <form action="{{ route('courses.enroll', $course->slug) }}" method="POST" class="mt-3">
-            @csrf
-            <button type="submit" class="btn-brut-dark w-full justify-center py-4 text-sm mb-2">
+          <div id="enroll-area" class="mt-3">
+            <button id="enroll-btn"
+              onclick="enrollCourse('{{ route('courses.enroll', $course->slug) }}', '{{ route('courses.learn', $course->slug) }}')"
+              class="btn-brut-dark w-full justify-center py-4 text-sm mb-2">
               {{ __('ui.enroll') }} ↗
             </button>
-          </form>
-          <a href="{{ route('login') }}" class="block text-center text-mono-sm text-[#888] hover:text-[#0A0A0A] transition-colors py-2">
-            {{ __('ui.already_account') }}
-          </a>
+            <a href="{{ route('login') }}" class="block text-center text-mono-sm text-[#888] hover:text-[#0A0A0A] transition-colors py-2">
+              {{ __('ui.already_account') }}
+            </a>
+          </div>
           @endif
 
           <div class="border-t-[3px] border-[#0A0A0A] mt-4 pt-4 space-y-2">
@@ -276,4 +277,27 @@
     </div>
   </div>
 </div>
+@push('scripts')
+<script>
+async function enrollCourse(enrollUrl, learnUrl) {
+    const btn = document.getElementById('enroll-btn');
+    btn.disabled = true;
+    const orig = btn.textContent;
+    btn.textContent = '...';
+    try {
+        const res = await fetch(enrollUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        });
+        if (res.status === 401) { window.location.href = learnUrl; return; }
+        const data = await res.json();
+        if (data.success) { window.location.href = data.redirect; }
+        else { btn.disabled = false; btn.textContent = orig; }
+    } catch(e) { btn.disabled = false; btn.textContent = orig; }
+}
+</script>
+@endpush
 @endsection

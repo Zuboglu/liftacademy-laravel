@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\CertificateConfig;
 use App\Models\Course;
-use App\Models\Progress;
 use App\Models\Section;
 use App\Models\Lesson;
 use App\Models\User;
@@ -59,11 +57,6 @@ class AdminCourseController extends Controller
     {
         $course->load(['sections.lessons', 'instructor', 'quizzes']);
 
-        // Sertifika konfigürasyonu ve ön koşullar
-        $certConfig   = CertificateConfig::with('prerequisites')->where('course_id', $course->id)->first();
-        $allCourses   = Course::where('id', '!=', $course->id)->orderBy('title')->get(['id', 'title']);
-        $prereqIds    = $certConfig?->prerequisites->pluck('id')->toArray() ?? [];
-
         // Ders bazlı video izleme istatistikleri
         $lessonIds = $course->sections->flatMap(fn($s) => $s->lessons->pluck('id'))->toArray();
         $watchStats = [];
@@ -81,7 +74,7 @@ class AdminCourseController extends Controller
             }
         }
 
-        return view('admin.courses.show', compact('course', 'certConfig', 'allCourses', 'prereqIds', 'watchStats'));
+        return view('admin.courses.show', compact('course', 'watchStats'));
     }
 
     public function edit(Course $course)
@@ -121,25 +114,6 @@ class AdminCourseController extends Controller
             return response()->json(['success' => true, 'redirect' => route('admin.courses.index')]);
         }
         return redirect()->route('admin.courses.index')->with('success', 'Kurs silindi.');
-    }
-
-    // ── Sertifika Ön Koşulları ─────────────────────────────────────────
-    public function updateCertConfig(Request $request, Course $course)
-    {
-        $prereqs = array_filter((array) $request->input('prerequisites', []), 'is_numeric');
-
-        $config = CertificateConfig::firstOrCreate(
-            ['course_id' => $course->id],
-            ['cert_level' => 'OPERATOR', 'completion_days' => 30, 'validity_days' => 365,
-             'requires_quiz' => true, 'min_watch_pct' => 80]
-        );
-
-        $config->prerequisites()->sync($prereqs);
-
-        if ($request->expectsJson()) {
-            return response()->json(['success' => true, 'message' => 'Ön koşullar kaydedildi.']);
-        }
-        return back()->with('success', 'Sertifika ön koşulları güncellendi.');
     }
 
     // ── Bölüm (Section) işlemleri ─────────────────────────────────────
