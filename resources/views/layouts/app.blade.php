@@ -8,22 +8,20 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
     <style>
-      /* Geniş ekran: kancalar tam görünür, içeriklerin önünde */
       #hook-left, #hook-right { transition: opacity .3s; }
 
-      /* Tablet: içeriklerle örtüşme başlar, arkaya al ve soldur */
-      @media (max-width: 1280px) {
+      /* Dar ekran: içerik alanına yaklaşınca arkaya gönder */
+      @media (max-width: 1024px) {
         #hook-left, #hook-right {
-          opacity: 0.18 !important;
+          opacity: 0.25 !important;
           z-index: 0 !important;
         }
       }
 
-      /* Mobile: neredeyse görünmez, tamamen içeriğin arkasında */
-      @media (max-width: 768px) {
+      /* Mobil: gizle */
+      @media (max-width: 640px) {
         #hook-left, #hook-right {
-          opacity: 0.07 !important;
-          z-index: 0 !important;
+          display: none !important;
         }
       }
     </style>
