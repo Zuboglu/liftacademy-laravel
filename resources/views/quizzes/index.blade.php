@@ -2,10 +2,10 @@
 @section('title', __('ui.quizzes') . ' – LiftAcademy')
 @section('content')
 
-<div id="hook-left" aria-hidden="true" style="position:fixed;top:-400px;left:75px;width:80px;z-index:20;pointer-events:none;opacity:1;">
+<div id="hook-left" aria-hidden="true" style="position:fixed;top:-400px;left:75px;width:80px;z-index:0;pointer-events:none;opacity:1;">
   <img src="/images/hook.svg" width="80" height="900" alt="">
 </div>
-<div id="hook-right" aria-hidden="true" style="position:fixed;top:-400px;right:75px;width:80px;z-index:20;pointer-events:none;opacity:1;transform:scaleX(-1);">
+<div id="hook-right" aria-hidden="true" style="position:fixed;top:-400px;right:75px;width:80px;z-index:0;pointer-events:none;opacity:1;transform:scaleX(-1);">
   <img src="/images/hook.svg" width="80" height="900" alt="">
 </div>
 
